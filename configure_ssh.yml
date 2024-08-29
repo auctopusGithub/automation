@@ -1,0 +1,36 @@
+---
+- name: Install OpenSSH Server and Configure SSH
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: Ensure OpenSSH Server is installed
+      apt:
+        name: openssh-server
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: Backup the original sshd_config
+      copy:
+        src: /etc/ssh/sshd_config
+        dest: /etc/ssh/sshd_config.bak
+        remote_src: yes
+
+    - name: Update sshd_config to permit root login
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^#?PermitRootLogin'
+        line: 'PermitRootLogin yes'
+        state: present
+
+    - name: Restart SSH service
+      service:
+        name: ssh
+        state: restarted
+
+    - name: Get the IP address
+      command: hostname -I
+      register: ip_address
+
+    - name: Display the IP address
+      debug:
+        msg: "Connect to the server using VSCode with the IP: {{ ip_address.stdout }}"
