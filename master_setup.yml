@@ -45,4 +45,9 @@
     - name: Execute the build_os_playbook_docker.yml playbook
       command: ansible-playbook build_os_playbook_docker.yml
       args:
-        chdir: "{{ dest_dir }}"
+        chdir: "{{ auctopus_docker_dest_dir }}"
+
+    - name: Delete the Linux Deployment repository
+      file:
+        path: "{{ dest_dir }}"
+        state: absent

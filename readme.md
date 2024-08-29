@@ -11,5 +11,5 @@ ansible-playbook -i inventory_file configure_ssh.yml
 2. Clone Linux Deployment Repo
 
 ```bash
-ansible-playbook -i inventory_file clone_repo.yml
+ansible-playbook -i inventory_file master_setup.yml
 ```
