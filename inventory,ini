@@ -1,2 +1,0 @@
-[all]
-your_target_host ansible_host=losthost
