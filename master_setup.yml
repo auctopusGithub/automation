@@ -9,10 +9,11 @@
     - name: "github_token"
       prompt: "Enter your GitHub personal access token"
       private: yes
+
   vars:
     # Linux Deployment repository
-    repo_url: "https://github.com/auctopusGithub/linux_deployment.git"
-    dest_dir: "{{ playbook_dir }}/linux_deployment"
+    linux_deployment_repo_url: "https://github.com/auctopusGithub/linux_deployment.git"
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
     # Auctopus Docker repository
     auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_automation_dev.git"
@@ -30,11 +31,23 @@
         git config --global credential.helper store
         echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
 
+    - name: Remove existing Linux Deployment repository if present
+      file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent
+        force: yes
+
     - name: Clone the Linux Deployment repository
       git:
-        repo: "{{ repo_url }}"
-        dest: "{{ dest_dir }}"
+        repo: "{{ linux_deployment_repo_url }}"
+        dest: "{{ linux_deployment_dest_dir }}"
         version: main
+
+    - name: Remove existing Auctopus Docker repository if present
+      file:
+        path: "{{ auctopus_docker_dest_dir }}"
+        state: absent
+        force: yes
 
     - name: Clone the Auctopus Docker repository
       git:
@@ -42,12 +55,13 @@
         dest: "{{ auctopus_docker_dest_dir }}"
         version: prod
 
-    - name: Execute the build_os_playbook_docker.yml playbook
-      command: ansible-playbook build_os_playbook_docker.yml
-      args:
-        chdir: "{{ auctopus_docker_dest_dir }}"
+- name: Include the build_os_playbook_docker.yml playbook
+  ansible.builtin.import_playbook: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
+  vars:
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
-    - name: Delete the Linux Deployment repository
-      file:
-        path: "{{ dest_dir }}"
-        state: absent
+
+- name: Delete the Linux Deployment repository
+  file:
+    path: "{{ linux_deployment_dest_dir }}"
+    state: absent
