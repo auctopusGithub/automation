@@ -1,17 +1,25 @@
 ---
 - name: Master Setup repository
   hosts: localhost
-  connection: local
   gather_facts: yes
   become: yes
 
   vars_prompt:
+    - name: ansible_ssh_user
+      prompt: "Enter SSH username"
+      private: no
+    - name: ansible_ssh_pass
+      prompt: "Enter SSH password"
+      private: yes
+    - name: ansible_become_pass
+      prompt: "Enter become password"
+      private: yes
     - name: "github_username"
       prompt: "Enter your GitHub username"
       private: no
     - name: "github_token"
       prompt: "Enter your GitHub personal access token"
-      private: yes
+      private: yes 
 
   vars:
     # Linux Deployment repository
