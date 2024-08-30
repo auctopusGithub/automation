@@ -2,6 +2,7 @@
 - name: Master Setup repository
   hosts: localhost
   become: yes
+  gather_facts: yes
   vars_prompt:
     - name: "github_username"
       prompt: "Enter your GitHub username"
@@ -64,6 +65,7 @@
 - name: Master Setup repository
   hosts: localhost
   become: yes
+  gather_facts: yes
 
   vars:
     # Linux Deployment repository
