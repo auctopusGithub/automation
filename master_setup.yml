@@ -91,3 +91,4 @@
       ansible.builtin.file:
         path: "{{ linux_deployment_dest_dir }}"
         state: absent
+      become: yes
