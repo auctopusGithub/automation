@@ -21,37 +21,36 @@
 
   tasks:
     - name: Ensure Git is installed
-      ansible.builtin.package:
+      apt:
         name: git
         state: present
       when: ansible_os_family == "Debian"
 
     - name: Configure Git with GitHub token
-      ansible.builtin.git_config:
-        name: "https://github.com/{{ github_username }}"
-        value: "{{ github_token }}"
-        scope: global
+      shell: |
+        git config --global credential.helper store
+        echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
 
     - name: Remove existing Linux Deployment repository if present
-      ansible.builtin.file:
+      file:
         path: "{{ linux_deployment_dest_dir }}"
         state: absent
         force: yes
 
     - name: Clone the Linux Deployment repository
-      ansible.builtin.git:
+      git:
         repo: "{{ linux_deployment_repo_url }}"
         dest: "{{ linux_deployment_dest_dir }}"
         version: main
 
     - name: Remove existing Auctopus Docker repository if present
-      ansible.builtin.file:
+      file:
         path: "{{ auctopus_docker_dest_dir }}"
         state: absent
         force: yes
 
     - name: Clone the Auctopus Docker repository
-      ansible.builtin.git:
+      git:
         repo: "{{ auctopus_docker_repo_url }}"
         dest: "{{ auctopus_docker_dest_dir }}"
         version: prod
