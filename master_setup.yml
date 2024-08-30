@@ -62,17 +62,17 @@
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
 
-- name: Master Setup repository
-  hosts: localhost
-  become: yes
-  gather_facts: yes
+# - name: Master Setup repository
+#   hosts: localhost
+#   become: yes
+#   gather_facts: yes
 
-  vars:
-    # Linux Deployment repository
-    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+#   vars:
+#     # Linux Deployment repository
+#     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
-  tasks:
-    - name: Delete the Linux Deployment repository
-      ansible.builtin.file:
-        path: "{{ linux_deployment_dest_dir }}"
-        state: absent
+#   tasks:
+#     - name: Delete the Linux Deployment repository
+#       ansible.builtin.file:
+#         path: "{{ linux_deployment_dest_dir }}"
+#         state: absent
