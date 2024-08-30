@@ -32,7 +32,7 @@
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
     # Auctopus Docker repository
-    auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_automation_dev.git"
+    auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_docker.git"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
 
   tasks:
