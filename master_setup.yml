@@ -20,12 +20,13 @@
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
 
   tasks:
-      apt:
+    - name: Ensure Git is installed
       apt:
         name: git
         state: present
       when: ansible_os_family == "Debian"
 
+    - name: Configure Git with GitHub token
       shell: |
         git config --global credential.helper store
         echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
@@ -54,30 +55,45 @@
         dest: "{{ auctopus_docker_dest_dir }}"
         version: prod
 
-- name: Include the build_os_playbook_docker.yml playbook
-  import_playbook: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
+- name: Master Setup repository
+  hosts: localhost
+  become: yes
+  gather_facts: yes
+
   vars:
+    # Linux Deployment repository
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+  vars:
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent#     # Linux Deployment repository
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+  vars:
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent#     # Linux Deployment repository
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+  vars:
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent#     # Linux Deployment repository
+    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+  vars:
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent#     # Linux Deployment repository
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
-
-# - name: Master Setup repository
-#   hosts: localhost
-#   become: yes
-#   gather_facts: yes
-
-#   vars:
-#     # Linux Deployment repository
-#     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
-#   vars:
-#   tasks:
-#     - name: Delete the Linux Deployment repository
-#       ansible.builtin.file:
-#         path: "{{ linux_deployment_dest_dir }}"
-#         state: absent#     # Linux Deployment repository
-#     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
-
-#   tasks:
-#     - name: Delete the Linux Deployment repository
-#       ansible.builtin.file:
-#         path: "{{ linux_deployment_dest_dir }}"
-#         state: absent
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent
