@@ -74,7 +74,7 @@
       git:
         repo: "{{ auctopus_docker_repo_url }}"
         dest: "{{ auctopus_docker_dest_dir }}"
-        version: prod
+        version: main
       become: yes
 
     - name: Check if build_os_playbook_docker.yml exists
