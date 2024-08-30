@@ -57,13 +57,21 @@
         version: prod
 
 - name: Include the build_os_playbook_docker.yml playbook
-  ansible.builtin.import_playbook: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
+  import_playbook: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
   vars:
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
 
-- name: Delete the Linux Deployment repository
-  ansible.builtin.file:
-    path: "{{ linux_deployment_dest_dir }}"
-    state: absent
+
+- name: Master Setup repository
+  hosts: localhost
+  become: yes
+
   vars:
+    # Linux Deployment repository
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+
+  tasks:
+    - name: Delete the Linux Deployment repository
+      ansible.builtin.file:
+        path: "{{ linux_deployment_dest_dir }}"
+        state: absent
