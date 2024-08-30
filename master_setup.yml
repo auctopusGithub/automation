@@ -77,11 +77,11 @@
     #     version: prod
     #   become: yes
 
-    # - name: Check if build_os_playbook_docker.yml exists
-    #   stat:
-    #     path: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
-    #   become: yes
-    #   register: build_os_playbook_docker
+    - name: Check if build_os_playbook_docker.yml exists
+      stat:
+        path: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
+      become: yes
+      register: build_os_playbook_docker
 
     - name: Include the build_os_playbook_docker.yml playbook
       include_tasks: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
