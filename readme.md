@@ -22,5 +22,5 @@ ansible-playbook configure_ssh.yml
 5. Clone Linux Deployment Repo
 
 ```bash
-ansible-playbook master_setup.yml
+ansible-playbook automation/master_setup.yml
 ```
