@@ -7,13 +7,12 @@
 sudo apt update && sudo apt upgrade -y && sudo apt install git ansible -y
 ```
 
-3. Clone automation repository using HTTPS
-
+3. Clone automation repository using HTTPS on deployment machine:
 ```bash
 git clone https://github.com/auctopusGithub/automation.git
 ```
 
-4. Run below commands after connecting to VSCode:
+4. Run below commands on deployment machine after cloning repository:
 ```bash
 ansible-playbook automation/configure_ssh.yml 
 ```
