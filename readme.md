@@ -1,6 +1,6 @@
 ### Welcome to initial setup of the application
 
-1. Run below commnads on machine:
+1. Run below commnads on deployment machine:
 ```bash
 sudo apt update && sudo apt upgrade -y && sudo apt install git ansible -y
 ```
