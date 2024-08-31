@@ -2,13 +2,7 @@
 
 1. Run below commnads on machine:
 ```bash
-  sudo apt update
-```
-```bash
-  sudo apt upgrade
-```
-```bash
-  sudo apt install git ansible -y
+sudo apt update && sudo apt upgrade -y && sudo apt install git ansible -y
 ```
 
 2. Clone automation repository using HTTPS
