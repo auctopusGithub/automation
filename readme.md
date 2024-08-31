@@ -14,7 +14,7 @@
 2. Clone automation repository using HTTPS
 
 ```bash
-  https://github.com/auctopusGithub/automation.git
+git clone  https://github.com/auctopusGithub/automation.git
 ```
 
 3. Connect to VS Code
