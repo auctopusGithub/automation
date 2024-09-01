@@ -1,24 +1,20 @@
----
 - name: Master Setup repository
   hosts: localhost
   gather_facts: yes
 
   vars_prompt:
-    - name: ansible_ssh_user
-      prompt: "Enter SSH username"
-      private: no
-    - name: ansible_ssh_pass
-      prompt: "Enter SSH password"
-      private: yes
-    - name: ansible_become_pass
-      prompt: "Enter become password"
-      private: yes
-    - name: "github_username"
+    - name: github_username
       prompt: "Enter your GitHub username"
       private: no
-    - name: "github_token"
+    - name: github_token
       prompt: "Enter your GitHub personal access token"
-      private: yes 
+      private: yes
+    - name: server_ip
+      prompt: "Enter the server IP address"
+      private: no
+    - name: deployment_type
+      prompt: "Enter the deployment type (controller, runner)"
+      private: no
 
   vars:
 
@@ -37,6 +33,34 @@
         state: present
       become: yes
       when: ansible_os_family == "Debian"
+
+    - name: Loop until SSH credentials are correct
+      block:
+        - name: Prompt for SSH username
+          set_fact:
+            ansible_ssh_user: "{{ lookup('vars_prompt', 'Enter SSH username') }}"
+        
+        - name: Prompt for SSH password
+          set_fact:
+            ansible_ssh_pass: "{{ lookup('vars_prompt', 'Enter SSH password', private=True) }}"
+
+        - name: Prompt for ssh become password
+          set_face:
+            ansible_become_pass: "{{ lookup('vars_prompt', 'Enter SSH become password', private=True) }}"
+        
+        - name: Validate SSH credentials
+          expect:
+            command: ssh -o StrictHostKeyChecking=no {{ ansible_ssh_user }}@{{ server_ip }}
+            responses:
+              password: "{{ ansible_ssh_pass }}"
+          register: ssh_login
+          until: ssh_login.rc == 0
+          retries: 1
+          delay: 0
+          ignore_errors: yes
+      when: ssh_login.rc != 0
+      retries: 9999
+      delay: 5
 
     - name: Configure Git with GitHub token
       shell: |
