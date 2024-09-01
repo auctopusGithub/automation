@@ -17,7 +17,6 @@
       private: no
 
   vars:
-
     # Linux Deployment repository
     linux_deployment_repo_url: "https://github.com/auctopusGithub/linux_deployment.git"
     linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
@@ -34,33 +33,34 @@
       become: yes
       when: ansible_os_family == "Debian"
 
-    - name: Loop until SSH credentials are correct
-      block:
-        - name: Prompt for SSH username
-          set_fact:
-            ansible_ssh_user: "{{ lookup('vars_prompt', 'Enter SSH username') }}"
-        
-        - name: Prompt for SSH password
-          set_fact:
-            ansible_ssh_pass: "{{ lookup('vars_prompt', 'Enter SSH password', private=True) }}"
-
-        - name: Prompt for ssh become password
-          set_face:
-            ansible_become_pass: "{{ lookup('vars_prompt', 'Enter SSH become password', private=True) }}"
-        
-        - name: Validate SSH credentials
-          expect:
-            command: ssh -o StrictHostKeyChecking=no {{ ansible_ssh_user }}@{{ server_ip }}
-            responses:
-              password: "{{ ansible_ssh_pass }}"
-          register: ssh_login
-          until: ssh_login.rc == 0
-          retries: 1
-          delay: 0
-          ignore_errors: yes
-      when: ssh_login.rc != 0
-      retries: 9999
-      delay: 5
+    - block:
+        - name: Loop until SSH credentials are correct
+          vars_prompt:
+            - name: ansible_ssh_user
+              prompt: "Enter SSH username"
+            - name: ansible_ssh_pass
+              prompt: "Enter SSH password"
+              private: yes
+            - name: ansible_become_pass
+              prompt: "Enter SSH become password"
+              private: yes
+          block:
+            - name: Validate SSH credentials
+              expect:
+                command: ssh -o StrictHostKeyChecking=no {{ ansible_ssh_user }}@{{ server_ip }}
+                responses:
+                  password: "{{ ansible_ssh_pass }}"
+              register: ssh_login
+              until: ssh_login.rc == 0
+              retries: 5
+              delay: 5
+              ignore_errors: yes
+    
+            - name: Fail if SSH credentials are incorrect after retries
+              fail:
+                msg: "SSH credentials are incorrect after multiple attempts."
+              when: ssh_login.rc != 0
+      become: yes
 
     - name: Configure Git with GitHub token
       shell: |
