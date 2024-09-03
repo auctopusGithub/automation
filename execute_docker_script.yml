@@ -6,15 +6,15 @@
     - name: deployment_type
       prompt: "Enter the deployment type (controller,runner)"
       private: no
-    # - name: anisble_ssh_user
-    #   prompt: "Enter the SSH username"
-    #   private: no
-    # - name: ansible_ssh_pass
-    #   prompt: "Enter the SSH password"
-    #   private: yes
-    # - name: ansible_become_pass
-    #   prompt: "Enter the sudo password"
-    #   private: yes
+    - name: anisble_ssh_user
+      prompt: "Enter the SSH username"
+      private: no
+    - name: ansible_ssh_pass
+      prompt: "Enter the SSH password"
+      private: yes
+    - name: ansible_become_pass
+      prompt: "Enter the sudo password"
+      private: yes
 
   vars:
     # Linux Deployment repository
@@ -24,9 +24,9 @@
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
 
     #Testing
-    anisble_ssh_user: "automation"
-    ansible_ssh_pass: "automation@321"
-    ansible_become_pass: "automation@321"
+    # anisble_ssh_user: "automation"
+    # ansible_ssh_pass: "automation@321"
+    # ansible_become_pass: "automation@321"
 
   tasks:
 
@@ -44,7 +44,6 @@
     - name: Include the execute_docker_script.yml playbook
       include_tasks: "{{ linux_deployment_dest_dir }}/execute_docker_script.yml"
       when: execute_docker_script.stat.exists
-
     
     - name: Delete the Linux Deployment repository
       ansible.builtin.file:

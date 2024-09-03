@@ -9,18 +9,18 @@
     - name: server_ip
       prompt: "Enter the server IP address"
       private: no
-    # - name: anisble_ssh_user
-    #   prompt: "Enter the SSH username"
-    #   private: no
-    # - name: ansible_ssh_pass
-    #   prompt: "Enter the SSH password"
-    #   private: yes
-    # - name: ansible_become_pass
-    #   prompt: "Enter the sudo password"
-    #   private: yes
-    # - name: github_username
-    #   prompt: "Enter your GitHub username"
-    #   private: no
+    - name: anisble_ssh_user
+      prompt: "Enter the SSH username"
+      private: no
+    - name: ansible_ssh_pass
+      prompt: "Enter the SSH password"
+      private: yes
+    - name: ansible_become_pass
+      prompt: "Enter the sudo password"
+      private: yes
+    - name: github_username
+      prompt: "Enter your GitHub username"
+      private: no
     - name: github_token
       prompt: "Enter your GitHub personal access token"
       private: yes
@@ -35,10 +35,10 @@
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
 
     #Testing
-    anisble_ssh_user: "automation"
-    ansible_ssh_pass: "automation@321"
-    ansible_become_pass: "automation@321"
-    github_username: "sunnyauctOpus"
+    # anisble_ssh_user: "automation"
+    # ansible_ssh_pass: "automation@321"
+    # ansible_become_pass: "automation@321"
+    # github_username: "sunnyauctOpus"
 
   tasks:
     - name: Validate deployment type
