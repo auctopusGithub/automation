@@ -117,12 +117,6 @@
         version: main
       become: yes
 
-    - name: Check if build_os_playbook_docker.yml exists
-      stat:
-        path: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
-      become: yes
-      register: build_os_playbook_docker
-
     - name: Replace value in backend .env file with server IP
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
@@ -147,12 +141,14 @@
       become: yes
       when: deployment_type == 'runner'
 
+    - name: Check if build_os_playbook_docker.yml exists
+      stat:
+        path: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
+      become: yes
+      register: build_os_playbook_docker
+
     - name: Include the build_os_playbook_docker.yml playbook
       include_tasks: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
       when: build_os_playbook_docker.stat.exists
 
-    - name: Delete the Linux Deployment repository
-      ansible.builtin.file:
-        path: "{{ linux_deployment_dest_dir }}"
-        state: absent
-      become: yes
+    

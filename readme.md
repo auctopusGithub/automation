@@ -19,3 +19,14 @@ ansible-playbook automation/configure_ssh.yml
 ```bash
 ansible-playbook automation/master_setup.yml
 ```
+
+5. Login Docker
+
+```bash
+    sudo docker login
+```
+
+6. Execute Docker Pull
+```bash
+ansible-playbook automation/execute_docker_script.yml
+```
