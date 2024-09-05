@@ -3,6 +3,15 @@
   gather_facts: yes
 
   vars_prompt:
+
+    - name: github_username
+      prompt: "Enter your GitHub username"
+      private: no
+
+    - name: github_token
+      prompt: "Enter your GitHub personal access token"
+      private: yes
+
     - name: docker_token
       prompt: "Enter your Docker Password"
       private: yes
@@ -27,13 +36,6 @@
       prompt: "Enter the sudo password"
       private: yes
 
-    - name: github_username
-      prompt: "Enter your GitHub username"
-      private: no
-
-    - name: github_token
-      prompt: "Enter your GitHub personal access token"
-      private: yes
 
   vars:
 
