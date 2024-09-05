@@ -41,7 +41,17 @@
 
     auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_docker.git"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+    
+    server_ip: ''
+    anisble_ssh_user: "automation"
+    ansible_ssh_pass: "automation@321"
+    ansible_become_pass: "automation@321"
+    github_username: "sunnyauctOpus"
+    deployment_type: 'controller'    
 
+    ####################################
+    #  Delete before pushing the code  #
+    ####################################
   tasks:
     - name: Validate deployment type
       fail:
