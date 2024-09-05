@@ -22,7 +22,7 @@
       include_tasks: docker/install_docker_and_compose.yml
 
     - name: Create Docker Service
-      include_tasks: docker/automation/create_docker_service.yml
+      include_tasks: docker/create_docker_service.yml
     
     - name: Docker login to Docker Hub
       ansible.builtin.command:
