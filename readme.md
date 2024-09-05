@@ -23,7 +23,7 @@ ansible-playbook automation/master_setup.yml
 5. Login Docker
 
 ```bash
-    sudo docker login
+echo 'password' | docker login -u <usename> --password-stdin
 ```
 
 6. Execute Docker Pull
