@@ -20,9 +20,9 @@
     #   prompt: "Enter the deployment type (controller,runner)"
     #   private: no
 
-    # - name: server_ip
-    #   prompt: "Enter the server IP address"
-    #   private: no
+    - name: server_ip
+      prompt: "Enter the server IP address"
+      private: no
 
     # - name: anisble_ssh_user
     #   prompt: "Enter the SSH username"
@@ -42,7 +42,7 @@
     auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_docker.git"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
     
-    server_ip: ''
+    # server_ip: ''
     anisble_ssh_user: "automation"
     ansible_ssh_pass: "automation@321"
     ansible_become_pass: "automation@321"
