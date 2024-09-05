@@ -1,0 +1,64 @@
+- name: Playbook to build OS and install Docker
+
+  block:
+    - name: Set service_file_path variable
+      set_fact:
+        service_file_path: /etc/systemd/system/auctopus_docker.service
+
+    - name: Set controller working_directory variable
+      set_fact:
+        working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod"
+      when: deployment_type == "controller"
+
+    - name: Set runner working_directory variable
+      set_fact:
+        working_directory: "{{ auctopus_docker_dest_dir }}/runnerserver/prod"
+      when: deployment_type == "runner"
+
+    - name: Adding Docker Prerequisites
+      include_tasks: docker/install_docker_prerequisites.yml
+
+    - name: Adding Docker and Compose packages
+      include_tasks: docker/install_docker_and_compose.yml
+
+    - name: Create Docker Service
+      include_tasks: docker/automation/create_docker_service.yml
+    
+    - name: Docker login to Docker Hub
+      ansible.builtin.command:
+        cmd: echo {{docker_token}} | docker login -u auctopustechnologies --password-stdin
+      become: yes
+      when: ping_result.ping is defined and ping_result.ping == "pong"
+
+
+    - name: Set controller script_path variable
+      set_fact:
+        script_path: "{{ auctopus_docker_dest_dir }}/automation/prod/fresh_start.sh"
+      when: deployment_type == "controller"
+
+    - name: Set runner script_path variable
+      set_fact:
+        script_path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/prod.sh"
+      when: deployment_type == "runner"
+    
+    - name: Run the script
+      ansible.builtin.shell: "{{ script_path }}"
+      register: script_output
+      async: 0
+      poll: 2
+      ignore_errors: yes
+      become: yes
+    
+    - name: Display script output
+      ansible.builtin.debug:
+        var: script_output.stdout_lines
+      when: script_output is defined
+
+    - name: Enable and Start Auctopus Docker Service
+      ansible.builtin.systemd:
+        name: auctopus_docker
+        enabled: yes
+        state: started
+      become: yes
+
+    

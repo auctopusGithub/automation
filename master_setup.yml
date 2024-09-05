@@ -3,44 +3,19 @@
   gather_facts: yes
 
   vars_prompt:
-    # - name: deployment_type
-    #   prompt: "Enter the deployment type (controller,runner)"
-    #   private: no
-    # - name: server_ip
-    #   prompt: "Enter the server IP address"
-    #   private: no
-    # - name: anisble_ssh_user
-    #   prompt: "Enter the SSH username"
-    #   private: no
-    # - name: ansible_ssh_pass
-    #   prompt: "Enter the SSH password"
-    #   private: yes
-    # - name: ansible_become_pass
-    #   prompt: "Enter the sudo password"
-    #   private: yes
-    # - name: github_username
-    #   prompt: "Enter your GitHub username"
-    #   private: no
     - name: github_token
       prompt: "Enter your GitHub personal access token"
       private: yes
 
-  vars:
-    # Linux Deployment repository
-    linux_deployment_repo_url: "https://github.com/auctopusGithub/linux_deployment.git"
-    linux_deployment_dest_dir: "{{ playbook_dir }}/linux_deployment"
+    - name: docker_token
+      prompt: "Enter your Docker Password"
+      private: yes
 
-    # Auctopus Docker repository
+
+  vars:
+
     auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_docker.git"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
-
-    #Testing
-    deployment_type: 'controller'
-    server_ip: '192.168.85.243'
-    anisble_ssh_user: "automation"
-    ansible_ssh_pass: "automation@321"
-    ansible_become_pass: "automation@321"
-    github_username: "sunnyauctOpus"
 
   tasks:
     - name: Validate deployment type
@@ -53,71 +28,25 @@
         msg: "Invalid server IP address. Please enter a valid IP address."
       when: server_ip is not match("^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$")
 
-    - name: Ensure Git is installed
-      apt:
-        name: git
-        state: present
-      become: yes
-
-    #TODO: Implement SSH login validation
-
-    # - name: Validate SSH credentials
-    #   expect:
-    #     command: ssh -o StrictHostKeyChecking=no {{ anisble_ssh_user }}@{{ server_ip }}
-    #     responses:
-    #       password: "{{ ansible_ssh_pass }}"
-    #   register: ssh_login
-    #   until: ssh_login.rc == 0
-    #   retries: 1
-    #   delay: 1
-    #   ignore_errors: yes
-    #   become: yes
-
-    # - name: Validate SSH become password
-    #   expect:
-    #     command: ssh -o StrictHostKeyChecking=no -t {{ anisble_ssh_user }}@{{ server_ip }} 'sudo -l'
-    #     responses:
-    #       password: "{{ ansible_become_pass }}"
-    #   register: sudo_login
-    #   until: sudo_login.rc == 0
-    #   retries: 1
-    #   delay: 1
-    #   ignore_errors: yes
-    #   become: yes
-
     - name: Configure Git with GitHub token
       shell: |
         git config --global credential.helper store
         echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
       become: yes
 
-    - name: Remove existing Linux Deployment repository if present
-      file:
-        path: "{{ linux_deployment_dest_dir }}"
-        state: absent
-        force: yes
-      become: yes
+    # - name: Remove existing Auctopus Docker repository if present
+    #   file:
+    #     path: "{{ auctopus_docker_dest_dir }}"
+    #     state: absent
+    #     force: yes
+    #   become: yes
 
-    - name: Clone the Linux Deployment repository
-      git:
-        repo: "{{ linux_deployment_repo_url }}"
-        dest: "{{ linux_deployment_dest_dir }}"
-        version: main
-      become: yes
-
-    - name: Remove existing Auctopus Docker repository if present
-      file:
-        path: "{{ auctopus_docker_dest_dir }}"
-        state: absent
-        force: yes
-      become: yes
-
-    - name: Clone the Auctopus Docker repository
-      git:
-        repo: "{{ auctopus_docker_repo_url }}"
-        dest: "{{ auctopus_docker_dest_dir }}"
-        version: main
-      become: yes
+    # - name: Clone the Auctopus Docker repository
+    #   git:
+    #     repo: "{{ auctopus_docker_repo_url }}"
+    #     dest: "{{ auctopus_docker_dest_dir }}"
+    #     version: main
+    #   become: yes
 
     - name: Replace value in backend .env file with server IP
       lineinfile:
@@ -143,14 +72,5 @@
       become: yes
       when: deployment_type == 'runner'
 
-    - name: Check if build_os_playbook_docker.yml exists
-      stat:
-        path: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
-      become: yes
-      register: build_os_playbook_docker
-
-    - name: Include the build_os_playbook_docker.yml playbook
-      include_tasks: "{{ linux_deployment_dest_dir }}/build_os_playbook_docker.yml"
-      when: build_os_playbook_docker.stat.exists
-
-    
+    - name: Run build_os_playbook_docker.yml 
+      include_tasks: build_os_playbook_docker.yml

@@ -14,9 +14,6 @@ sudo git clone https://github.com/auctopusGithub/automation.git
 
 4. Run below commands on deployment machine after cloning repository:
 ```bash
-ansible-playbook automation/configure_ssh.yml 
-```
-```bash
 ansible-playbook automation/master_setup.yml
 ```
 
