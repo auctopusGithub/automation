@@ -2,17 +2,17 @@
 
   block:
   
-    - name: Remove Docker APT source list if it exists
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/docker.list
-        state: absent
-        become: yes
+    # - name: Remove Docker APT source list if it exists
+    #   ansible.builtin.file:
+    #     path: /etc/apt/sources.list.d/docker.list
+    #     state: absent
+    #     become: yes
 
-    - name: Remove Docker GPG keyring if it exists
-      ansible.builtin.file:
-        path: /usr/share/keyrings/docker-archive-keyring.gpg
-        state: absent
-      become: yes
+    # - name: Remove Docker GPG keyring if it exists
+    #   ansible.builtin.file:
+    #     path: /usr/share/keyrings/docker-archive-keyring.gpg
+    #     state: absent
+    #   become: yes
 
 
     - name: Set service_file_path variable
