@@ -38,7 +38,7 @@
 
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod/anisible_fresh_start.yml"
-      when: deployment_type == "runner"
+      when: deployment_type == "controller"
 
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/anisible_fresh_start.yml"
