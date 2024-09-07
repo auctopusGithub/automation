@@ -16,15 +16,3 @@ sudo git clone https://github.com/auctopusGithub/automation.git
 ```bash
 ansible-playbook automation/master_setup.yml
 ```
-
-5. Login Docker
-
-```bash
-sudo docker login -u <usename>
-password
-```
-
-6. Execute Docker Pull
-```bash
-ansible-playbook automation/execute_docker_script.yml
-```
