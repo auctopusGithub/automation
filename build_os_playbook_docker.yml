@@ -28,7 +28,6 @@
       ansible.builtin.command:
         cmd: echo {{docker_token}} | docker login -u auctopustechnologies --password-stdin
       become: yes
-      when: ping_result.ping is defined and ping_result.ping == "pong"
 
     # - name: Set controller script_path variable
     #   set_fact:
