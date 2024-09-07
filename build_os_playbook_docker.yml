@@ -29,24 +29,6 @@
         cmd: echo {{docker_token}} | docker login -u auctopustechnologies --password-stdin
       become: yes
 
-    # - name: Set controller script_path variable
-    #   set_fact:
-    #     script_path: "{{ auctopus_docker_dest_dir }}/automation/prod/fresh_start.sh"
-    #   when: deployment_type == "controller"
-
-    # - name: Set runner script_path variable
-    #   set_fact:
-    #     script_path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/prod.sh"
-    #   when: deployment_type == "runner"
-    
-    # - name: Run the script
-    #   ansible.builtin.shell: "{{ script_path }}"
-    #   register: script_output
-    #   async: 0
-    #   poll: 2
-    #   ignore_errors: yes
-    #   become: yes
-
     - name: Enable and Start Auctopus Docker Service
       ansible.builtin.systemd:
         name: auctopus_docker
@@ -55,13 +37,12 @@
       become: yes
 
     - name: Run Docker Setup
-      include_tasks: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/anisible_fresh_start.yml"
-      when: deployment_type == "controller"
+      include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod/anisible_fresh_start.yml"
+      when: deployment_type == "runner"
 
-    # - name: Display script output
-    #   ansible.builtin.debug:
-    #     var: script_output.stdout_lines
-    #   when: script_output is defined
+    - name: Run Docker Setup
+      include_tasks: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/anisible_fresh_start.yml"
+      when: deployment_type == "runner"
 
     
 
