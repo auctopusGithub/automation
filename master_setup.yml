@@ -4,10 +4,6 @@
 
   vars_prompt:
 
-    # - name: github_username
-    #   prompt: "Enter your GitHub username"
-    #   private: no
-
     - name: github_token
       prompt: "Enter your GitHub personal access token"
       private: yes
@@ -24,18 +20,6 @@
       prompt: "Enter the server IP address"
       private: no
 
-    # - name: anisble_ssh_user
-    #   prompt: "Enter the SSH username"
-    #   private: no
-
-    # - name: ansible_ssh_pass
-    #   prompt: "Enter the SSH password"
-    #   private: yes
-
-    # - name: ansible_become_pass
-    #   prompt: "Enter the sudo password"
-    #   private: yes
-
 
   vars:
 
@@ -48,9 +32,6 @@
     github_username: "sunnyauctOpus"
     deployment_type: 'controller'    
 
-    ####################################
-    #  Delete before pushing the code  #
-    ####################################
   tasks:
     - name: Validate deployment type
       fail:
