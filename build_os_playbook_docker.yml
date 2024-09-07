@@ -1,19 +1,6 @@
 - name: Playbook to build OS and install Docker
 
   block:
-  
-    # - name: Remove Docker APT source list if it exists
-    #   ansible.builtin.file:
-    #     path: /etc/apt/sources.list.d/docker.list
-    #     state: absent
-    #     become: yes
-
-    # - name: Remove Docker GPG keyring if it exists
-    #   ansible.builtin.file:
-    #     path: /usr/share/keyrings/docker-archive-keyring.gpg
-    #     state: absent
-    #   become: yes
-
 
     - name: Set service_file_path variable
       set_fact:
@@ -42,12 +29,17 @@
       ansible.builtin.command:
         cmd: echo {{docker_token}} | docker login -u auctopustechnologies --password-stdin
       become: yes
+      register: docker_login_result
 
-    - name: Enable and Start Auctopus Docker Service
+    - name: Display Docker login result
+      ansible.builtin.debug:
+        var: docker_login_result.stdout
+
+    - name: Enable Auctopus Docker Service
       ansible.builtin.systemd:
         name: auctopus_docker
         enabled: yes
-        state: started
+        state: reloaded
       become: yes
 
     - name: Run Docker Setup
