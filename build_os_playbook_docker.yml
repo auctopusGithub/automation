@@ -27,10 +27,10 @@
     
     - name: Docker login to Docker Hub
       ansible.builtin.command:
-        cmd: "{{ docker_token }} | docker login -u auctopustechnologies --password-stdin"
+        cmd: "docker login -u auctopustechnologies --password-stdin {{docker_token}}"
       become: yes
       register: docker_login_result
-      
+
     - name: Display Docker login result
       ansible.builtin.debug:
         var: docker_login_result.stdout
