@@ -31,6 +31,7 @@
         enabled: yes
         state: reloaded
       become: yes
+      ignore_errors: yes
 
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod/anisible_fresh_start.yml"
