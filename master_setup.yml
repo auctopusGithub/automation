@@ -63,13 +63,13 @@
         version: main
       become: yes
 
-    # - name: Replace value in backend .env file with server IP
-    #   lineinfile:
-    #     path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
-    #     regexp: '^FRONTEND_HOST=.*$'
-    #     line: 'FRONTEND_HOST={{ server_ip }}'
-    #   become: yes
-    #   when: deployment_type == 'controller'
+    - name: Replace value in backend .env file with server IP
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
+        regexp: '^FRONTEND_HOST=.*$'
+        line: 'FRONTEND_HOST={{ server_ip }}'
+      become: yes
+      when: deployment_type == 'controller'
 
     - name: Replace value in frontend .env file with server IP
       lineinfile:
