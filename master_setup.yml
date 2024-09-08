@@ -16,9 +16,9 @@
       prompt: "Enter the deployment type (controller,runner)"
       private: no
 
-    # - name: server_ip
-    #   prompt: "Enter the server IP address"
-    #   private: no
+    - name: server_ip
+      prompt: "Enter the server IP address"
+      private: no
 
 
   vars:
@@ -71,13 +71,13 @@
     #   become: yes
     #   when: deployment_type == 'controller'
 
-    # - name: Replace value in frontend .env file with server IP
-    #   lineinfile:
-    #     path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/frontend.env"
-    #     regexp: '^REACT_APP_BACKEND_HOST=.*$'
-    #     line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
-    #   become: yes
-    #   when: deployment_type == 'controller'
+    - name: Replace value in frontend .env file with server IP
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/frontend.env"
+        regexp: '^REACT_APP_BACKEND_HOST=.*$'
+        line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
+      become: yes
+      when: deployment_type == 'controller'
 
     # - name: Replace value in backend .env file with server IP
     #   lineinfile:
