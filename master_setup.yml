@@ -38,10 +38,10 @@
         msg: "Invalid deployment type. Please enter 'controller' or 'runner'."
       when: deployment_type not in ['controller', 'runner']
     
-    - name: Validate server IP address
-      fail:
-        msg: "Invalid server IP address. Please enter a valid IP address."
-      when: server_ip is not match("^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$")
+    # - name: Validate server IP address
+    #   fail:
+    #     msg: "Invalid server IP address. Please enter a valid IP address."
+    #   when: server_ip is not match("^(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)\\.(25[0-5]|2[0-4][0-9]|[0-1]?[0-9][0-9]?)$")
 
     - name: Configure Git with GitHub token
       shell: |
