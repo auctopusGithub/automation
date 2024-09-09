@@ -2,39 +2,42 @@
   hosts: localhost
   gather_facts: yes
 
-  vars_prompt:
-
-    - name: github_token
-      prompt: "Enter your GitHub personal access token"
-      private: yes
-
-    - name: docker_token
-      prompt: "Enter your Docker Password"
-      private: yes
-
-    - name: deployment_type
-      prompt: "Enter the deployment type (controller,runner)"
-      private: no
-
-    - name: server_ip
-      prompt: "Enter the server IP address"
-      private: no
-
-    - name: server_port
-      prompt: "Enter the frontend server port"
-      private: no
-
   vars:
-    auctopus_docker_repo_url: "https://github.com/auctopusGithub/auctopus_docker.git"
+    auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
-    server_ip: ''
-    anisble_ssh_user: "automation"
-    ansible_ssh_pass: "automation@321"
-    ansible_become_pass: "automation@321"
-    github_username: "sunnyauctOpus"
-    deployment_type: 'controller'    
+    anisble_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
+    ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
+    ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}" 
+    server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+    github_username: "{{ lookup('env', 'GITHUB_USERNAME') }}"
+    deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
+    github_token: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+    docker_token: "{{ lookup('env', 'DOCKER_TOKEN') }}"
+    server_port: "{{ lookup('env', 'SERVER_PORT') }}"
 
+    
   tasks:
+
+    # - name: Log into DockerHub
+    #   community.docker.docker_login:
+    #     username: "{{ docker_username }}"
+    #     password: "{{ docker_token }}"
+    #     registry: "https://index.docker.io/v1/"
+    #   become: yes
+
+
+    - name: Remove Docker APT sources list
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/docker.list
+        state: absent
+      become: yes
+
+    - name: Remove Docker GPG keyring
+      ansible.builtin.file:
+        path: /usr/share/keyrings/docker-archive-keyring.gpg
+        state: absent
+      become: yes
+
     - name: Validate deployment type
       fail:
         msg: "Invalid deployment type. Please enter 'controller' or 'runner'."
