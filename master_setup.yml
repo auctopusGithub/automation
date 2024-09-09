@@ -20,6 +20,9 @@
       prompt: "Enter the server IP address"
       private: no
 
+    - name: server_port
+      prompt: "Enter the frontend server port"
+      private: no
 
   vars:
 
@@ -68,6 +71,14 @@
         path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
         regexp: '^FRONTEND_HOST=.*$'
         line: 'FRONTEND_HOST={{ server_ip }}'
+      become: yes
+      when: deployment_type == 'controller'
+
+    - name: Replace value in backend .env file with server port
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
+        regexp: '^FRONTEND_PORT=.*$'
+        line: 'FRONTEND_PORT={{ server_port }}'
       become: yes
       when: deployment_type == 'controller'
 
