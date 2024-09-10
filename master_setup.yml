@@ -18,21 +18,21 @@
 
     
   tasks:
-
-    - name: Check if port 80 is listening
+    - name: Check if port {{ server_port }} is listening
       command: ss -tuln | grep ":{{ server_port }}"
       register: port_check
-      failed_when: port_check.stdout != ""
+      failed_when: port_check.rc == 0  # Fail if the port is found
+      changed_when: false  # The command does not change the system state
 
-    - name: Fail if port 80 is listening
+    - name: Fail if port {{ server_port }} is listening
       fail:
         msg: "Port {{ server_port }} is listening on {{ ansible_hostname }}. This is unexpected."
-      when: port_check.stdout != ""
+      when: port_check.rc == 0  # When the command succeeds (port is found)
 
     - name: Display success message
       debug:
         msg: "Port {{ server_port }} is not listening on {{ ansible_hostname }}. As expected."
-      when: port_check.stdout == ""
+      when: port_check.rc != 0  # When the command fails (port is not found)
       
     - name: Remove Docker APT sources list
       ansible.builtin.file:
