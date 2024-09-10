@@ -19,14 +19,21 @@
     
   tasks:
 
-    # - name: Log into DockerHub
-    #   community.docker.docker_login:
-    #     username: "{{ docker_username }}"
-    #     password: "{{ docker_token }}"
-    #     registry: "https://index.docker.io/v1/"
-    #   become: yes
+    - name: Check if port 80 is listening
+      command: ss -tuln | grep ":{{ server_port }}"
+      register: port_check
+      failed_when: port_check.stdout != ""
 
+    - name: Fail if port 80 is listening
+      fail:
+        msg: "Port {{ server_port }} is listening on {{ ansible_hostname }}. This is unexpected."
+      when: port_check.stdout != ""
 
+    - name: Display success message
+      debug:
+        msg: "Port {{ server_port }} is not listening on {{ ansible_hostname }}. As expected."
+      when: port_check.stdout == ""
+      
     - name: Remove Docker APT sources list
       ansible.builtin.file:
         path: /etc/apt/sources.list.d/docker.list
