@@ -19,7 +19,7 @@
     
   tasks:
     - name: Check if port {{ server_port }} is listening
-      command: ss -tuln | grep ":{{ server_port }}"
+      command: ss -tuln | grep "{{ server_port }}"
       register: port_check
       failed_when: port_check.rc == 0  # Fail if the port is found
       changed_when: false  # The command does not change the system state
