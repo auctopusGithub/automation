@@ -26,6 +26,7 @@ export ANSIBLE_SSH_USER=""
 export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
+clear
 ```
 
 5. Environment Variable required for Runner:
@@ -41,6 +42,7 @@ export ANSIBLE_SSH_USER=""
 export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
+clear
 ```
 
 6. Run below commands on deployment machine after cloning repository:
