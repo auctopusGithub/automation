@@ -105,3 +105,11 @@
 
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
+
+    - name: Reboot the server
+      command: sudo reboot
+      become: yes
+      become_method: sudo
+      vars:
+        ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+    
