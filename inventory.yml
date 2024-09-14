@@ -1,7 +1,7 @@
 all:
   hosts:
     master1:
-      ansible_host: 192.168.67.128
+      ansible_host: 192.168.85.157
       deployment_type: controller
       server_ip: "{{ lookup('env', 'SERVER_IP') }}"
       server_port: "{{ lookup('env', 'SERVER_PORT') }}"
