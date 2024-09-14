@@ -93,26 +93,6 @@
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
 
-    - name: Update SSH configuration for runner deployment type
-      block:
-        - name: Add KexAlgorithms to /etc/ssh/ssh_config
-          lineinfile:
-            path: /etc/ssh/ssh_config
-            line: "KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,diffie-hellman-group14-sha256"
-            create: yes
-            state: present
-            regexp: '^KexAlgorithms'
-            validate: 'sshd -T -f %s'
-        
-        - name: Add HostKeyAlgorithms to /etc/ssh/ssh_config
-          lineinfile:
-            path: /etc/ssh/ssh_config
-            line: "HostKeyAlgorithms +ssh-rsa,ecdsa-sha2-nistp256"
-            create: yes
-            state: present
-            regexp: '^HostKeyAlgorithms'
-            validate: 'sshd -T -f %s'
-      when: deployment_type == 'runner
       
     - name: Reboot the server
       command: sudo reboot
