@@ -1,33 +1,33 @@
 all:
   hosts:
     master1:
-      ansible_host: 192.168.67.128
+      ansible_host: 192.168.85.157
       deployment_type: controller
       server_ip: "{{ lookup('env', 'SERVER_IP') }}"
       server_port: "{{ lookup('env', 'SERVER_PORT') }}"
     
     master2:
-      ansible_host: 192.168.67.181
+      ansible_host: 10.61.1.177
       deployment_type: runner
-      server_ip: 192.168.67.181
+      server_ip: 10.61.1.177
       server_port: 80
     
-    # master3:
-    #   ansible_host: 10.71.1.177
-    #   deployment_type: runner
-    #   server_ip: 10.71.1.177
-    #   server_port: 80
+    master3:
+      ansible_host: 10.71.1.177
+      deployment_type: runner
+      server_ip: 10.71.1.177
+      server_port: 80
     
-    # master4:
-    #   ansible_host: 10.81.1.177
-    #   deployment_type: runner
-    #   server_ip: 10.81.1.177
-    #   server_port: 80
+    master4:
+      ansible_host: 10.81.1.177
+      deployment_type: runner
+      server_ip: 10.81.1.177
+      server_port: 80
     
-    # master5:
-    #   ansible_host: 10.91.1.177
-    #   deployment_type: runner
-    #   server_ip: 10.91.1.177
-    #   server_port: 80
+    master5:
+      ansible_host: 10.91.1.177
+      deployment_type: runner
+      server_ip: 10.91.1.177
+      server_port: 80
 
 

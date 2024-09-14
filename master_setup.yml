@@ -20,6 +20,7 @@
   tasks:
     - debug:
         msg: "{{ansible_ssh_user}} {{ansible_ssh_pass}}  {{ansible_become_pass}}"
+
     - name: Remove Docker APT sources list
       ansible.builtin.file:
         path: /etc/apt/sources.list.d/docker.list
