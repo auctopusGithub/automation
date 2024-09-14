@@ -4,7 +4,7 @@
 
 2. Run below commnads on deployment machine:
 ```bash
-sudo apt update && sudo apt upgrade -y && sudo apt install git ansible net-tools -y
+sudo apt update && sudo apt upgrade -y && sudo apt install -y git ansible sshpass
 ```
 
 3. Clone automation repository using HTTPS on deployment machine:

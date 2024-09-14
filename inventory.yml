@@ -1,0 +1,45 @@
+all:
+  hosts:
+    master1:
+      ansible_host: 192.168.67.128
+      deployment_type: controller
+      server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+      server_port: "{{ lookup('env', 'SERVER_PORT') }}"
+    
+    master2:
+      ansible_host: 10.61.1.177
+      deployment_type: runner
+      server_ip: 10.61.1.177
+      server_port: 80
+    
+    master3:
+      ansible_host: 10.71.1.177
+      deployment_type: runner
+      server_ip: 10.71.1.177
+      server_port: 80
+    
+    master4:
+      ansible_host: 10.81.1.177
+      deployment_type: runner
+      server_ip: 10.81.1.177
+      server_port: 80
+    
+    master5:
+      ansible_host: 10.91.1.177
+      deployment_type: runner
+      server_ip: 10.91.1.177
+      server_port: 80
+        
+  vars:
+    auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
+    auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+    anisble_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
+    ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
+    ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+    github_username: "{{ lookup('env', 'GITHUB_USERNAME') }}"
+    github_token: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+    docker_token: "{{ lookup('env', 'DOCKER_TOKEN') }}"
+    docker_username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
+    server_port: "{{ lookup('env', 'SERVER_PORT') }}"
+    server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+
