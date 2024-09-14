@@ -3,8 +3,8 @@ all:
     master1:
       ansible_host: 192.168.85.157
       deployment_type: controller
-      server_ip: "{{ lookup('env', 'SERVER_IP') }}"
-      server_port: "{{ lookup('env', 'SERVER_PORT') }}"
+      server_ip: dev.auctopustechnologies.com
+      server_port: 8000
     
     master2:
       ansible_host: 10.61.1.177
