@@ -49,3 +49,10 @@ clear
 ```bash
 ansible-playbook automation/master_setup.yml
 ```
+
+
+7. Add KexAlgorithms:
+```bash
+KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,diffie-hellman-group14-sha256
+HostKeyAlgorithms +ssh-rsa,ecdsa-sha2-nistp256
+```
