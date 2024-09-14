@@ -18,13 +18,6 @@
 
     
   tasks:
-    - name: Check if port {{ server_port }} is listening
-      command: ss -tuln | grep "{{ server_port }}"
-      register: port_check
-
-    - name: Display success message
-      debug:
-        msg: "Port {{ port_check }} status on {{ ansible_hostname }}"
       
     - name: Remove Docker APT sources list
       ansible.builtin.file:
