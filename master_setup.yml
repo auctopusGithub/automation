@@ -125,9 +125,8 @@
             state: present
             regexp: '^HostKeyAlgorithms'
             validate: 'sshd -T -f %s'
-			
       when: deployment_type == 'runner
-	  
+      
     - name: Reboot the server
       command: sudo reboot
       become: yes
