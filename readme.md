@@ -47,7 +47,7 @@ clear
 
 6. Run below commands on deployment machine after cloning repository:
 ```bash
-ansible-playbook automation/master_setup.yml
+ansible-playbook automation/master_setup.yml -i automation/inventory.yml
 ```
 
 
