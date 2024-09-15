@@ -18,8 +18,6 @@
 
     
   tasks:
-    - debug:
-        msg: "{{ansible_ssh_user}} {{ansible_ssh_pass}}  {{ansible_become_pass}}"
 
     - name: Remove Docker APT sources list
       ansible.builtin.file:
@@ -93,7 +91,6 @@
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
 
-      
     - name: Reboot the server
       command: sudo reboot
       become: yes
