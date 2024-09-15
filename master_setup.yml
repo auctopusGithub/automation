@@ -18,6 +18,8 @@
 
     
   tasks:
+    - debug:
+        msg: "{{server_ip}}"
 
     - name: Remove Docker APT sources list
       ansible.builtin.file:
