@@ -1,0 +1,43 @@
+- name: Create System Management Service
+  block:
+    - name: Check if System Management Service File Exists
+      ansible.builtin.stat:
+        path: "{{ system_management_service_file_path }}"
+      register: service_file_stat
+
+    - name: Remove Existing System Management Service File
+      ansible.builtin.file:
+        path: "{{ system_management_service_file_path }}"
+        state: absent
+      when: service_file_stat.stat.exists
+
+    - name: Create System Management Service File
+      ansible.builtin.file:
+        path: "{{ system_management_service_file_path }}"
+        state: touch
+        mode: '0644'
+        
+    - name: Insert System Management Service Configuration
+      ansible.builtin.blockinfile:
+        path: "{{ system_management_service_file_path }}"
+        block: |
+          [Unit]
+          Description=System Management Service
+          After=network.target
+
+          [Service]
+          User=root
+          Group=root
+          WorkingDirectory={{ system_management_working_directory }}
+          ExecStart=runserver.sh
+          Restart=always
+          RestartSec=10s
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload Systemd Daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+  become: yes

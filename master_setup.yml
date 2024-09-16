@@ -5,6 +5,8 @@
   vars:
     auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
     auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+    system_management_repo_url: "{{ lookup('env', 'SYSTEM_MANAGEMENT_REPO_URL') }}"
+    system_management_dest_dir: "{{ playbook_dir }}/system_management"
     ansible_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
     ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
     ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}" 
@@ -58,6 +60,21 @@
         version: main
       become: yes
 
+    
+    - name: Remove existing System Management repository if present
+      file:
+        path: "{{ system_management_dest_dir }}"
+        state: absent
+        force: yes
+      become: yes
+
+    - name: Clone the System Management repository
+      git:
+        repo: "{{ system_management_repo_url }}"
+        dest: "{{ system_management_dest_dir }}"
+        version: main
+      become: yes
+
     - name: Replace value in backend .env file with server IP
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
@@ -92,6 +109,9 @@
 
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
+    
+    - name: Run create_system_management_service.yml 
+      include_tasks: create_system_management_service.yml
 
     - name: Reboot the server
       command: sudo reboot
