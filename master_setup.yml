@@ -120,15 +120,15 @@
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
 
-    - name: Create a virtual environment
+    - name: Create a virtual environment with Python 3.12
       ansible.builtin.command:
-        cmd: /usr/bin/python3 -m venv {{ system_management_working_directory }}/backend/venv
+        cmd: /usr/bin/python3.12 -m venv {{ system_management_working_directory }}/backend/venv
       become: yes
       when: deployment_type == 'controller'
 
     - name: Install specific Python dependencies in virtual environment
       ansible.builtin.command:
-        cmd: "{{ system_management_working_directory }}/backend/venv/bin/pip install -r {{ system_management_working_directory }}/backend/requirements.txt"
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/pip install django python-decouple pyyaml"
       become: yes
       when: deployment_type == 'controller'
 
@@ -145,14 +145,14 @@
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-    
+
     - name: Run Django create_users
       ansible.builtin.command:
         cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py create_users"
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-    
+
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
       when: deployment_type == 'controller'
