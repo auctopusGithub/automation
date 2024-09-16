@@ -126,6 +126,10 @@
       become: yes
       ignore_errors: yes
       when: deployment_type == 'controller'
+
+    - name: Gather facts
+      ansible.builtin.setup:
+      when: deployment_type == 'controller'
     
     - name: Add Docker repository
       ansible.builtin.apt_repository:
