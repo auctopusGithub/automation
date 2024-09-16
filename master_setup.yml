@@ -120,52 +120,69 @@
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
 
+    - name: Remove conflicting Docker repository entry
+      ansible.builtin.command:
+        cmd: rm -f /etc/apt/sources.list.d/docker.list
+      become: yes
+      ignore_errors: yes
+    
+    - name: Add Docker repository
+      ansible.builtin.apt_repository:
+        repo: deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable
+        state: present
+      become: yes
+    
+    - name: Update APT package index
+      ansible.builtin.apt:
+        update_cache: yes
+      become: yes
+    
     - name: Ensure python3-virtualenv is installed
       ansible.builtin.apt:
         name: python3-virtualenv
         state: present
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Create a virtual environment using virtualenv
       ansible.builtin.command:
         cmd: virtualenv venv
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Install Python dependencies from requirements.txt
       ansible.builtin.command:
         cmd: ./venv/bin/pip install -r requirements.txt
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run Django makemigrations
       ansible.builtin.command:
         cmd: ./venv/bin/python manage.py makemigrations
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run Django migrate
       ansible.builtin.command:
         cmd: ./venv/bin/python manage.py migrate
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run Django create_users
       ansible.builtin.command:
         cmd: ./venv/bin/python manage.py create_users
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
       when: deployment_type == 'controller'
-
+  
     # - name: Reboot the server
     #   command: sudo reboot
     #   become: yes
