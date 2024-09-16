@@ -3,120 +3,127 @@
   gather_facts: no
 
   vars:
-    auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
-    auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+    # auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
+    # auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
     system_management_repo_url: "{{ lookup('env', 'SYSTEM_MANAGEMENT_REPO_URL') }}"
     system_management_dest_dir: "{{ playbook_dir }}/system_management"
-    ansible_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
-    ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
-    ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}" 
-    github_username: "{{ lookup('env', 'GITHUB_USERNAME') }}"
-    github_token: "{{ lookup('env', 'GITHUB_TOKEN') }}"
-    docker_token: "{{ lookup('env', 'DOCKER_TOKEN') }}"
-    docker_username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
+    # ansible_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
+    # ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
+    # ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}" 
+    # github_username: "{{ lookup('env', 'GITHUB_USERNAME') }}"
+    # github_token: "{{ lookup('env', 'GITHUB_TOKEN') }}"
+    # docker_token: "{{ lookup('env', 'DOCKER_TOKEN') }}"
+    # docker_username: "{{ lookup('env', 'DOCKER_USERNAME') }}"
 
-    server_port: "{{ lookup('env', 'SERVER_PORT') }}"
-    server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+    # server_port: "{{ lookup('env', 'SERVER_PORT') }}"
+    # server_ip: "{{ lookup('env', 'SERVER_IP') }}"
 
     
   tasks:
-    - debug:
-        msg: "{{server_ip}}"
+    # - debug:
+    #     msg: "{{server_ip}}"
 
-    - name: Remove Docker APT sources list
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/docker.list
-        state: absent
-      become: yes
+    # - name: Remove Docker APT sources list
+    #   ansible.builtin.file:
+    #     path: /etc/apt/sources.list.d/docker.list
+    #     state: absent
+    #   become: yes
 
-    - name: Remove Docker GPG keyring
-      ansible.builtin.file:
-        path: /usr/share/keyrings/docker-archive-keyring.gpg
-        state: absent
-      become: yes
+    # - name: Remove Docker GPG keyring
+    #   ansible.builtin.file:
+    #     path: /usr/share/keyrings/docker-archive-keyring.gpg
+    #     state: absent
+    #   become: yes
 
-    - name: Validate deployment type
-      fail:
-        msg: "Invalid deployment type. Please enter 'controller' or 'runner'."
-      when: deployment_type not in ['controller', 'runner']
+    # - name: Validate deployment type
+    #   fail:
+    #     msg: "Invalid deployment type. Please enter 'controller' or 'runner'."
+    #   when: deployment_type not in ['controller', 'runner']
     
-    - name: Configure Git with GitHub token
-      shell: |
-        git config --global credential.helper store
-        echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
-      become: yes
+    # - name: Configure Git with GitHub token
+    #   shell: |
+    #     git config --global credential.helper store
+    #     echo "https://{{ github_username }}:{{ github_token }}@github.com" > ~/.git-credentials
+    #   become: yes
 
-    - name: Remove existing Auctopus Docker repository if present
-      file:
-        path: "{{ auctopus_docker_dest_dir }}"
-        state: absent
-        force: yes
-      become: yes
+    # - name: Remove existing Auctopus Docker repository if present
+    #   file:
+    #     path: "{{ auctopus_docker_dest_dir }}"
+    #     state: absent
+    #     force: yes
+    #   become: yes
 
-    - name: Clone the Auctopus Docker repository
-      git:
-        repo: "{{ auctopus_docker_repo_url }}"
-        dest: "{{ auctopus_docker_dest_dir }}"
-        version: main
-      become: yes
-
+    # - name: Clone the Auctopus Docker repository
+    #   git:
+    #     repo: "{{ auctopus_docker_repo_url }}"
+    #     dest: "{{ auctopus_docker_dest_dir }}"
+    #     version: main
+    #   become: yes
     
-    - name: Remove existing System Management repository if present
-      file:
-        path: "{{ system_management_dest_dir }}"
-        state: absent
-        force: yes
-      become: yes
+    # - name: Remove existing System Management repository if present
+    #   file:
+    #     path: "{{ system_management_dest_dir }}"
+    #     state: absent
+    #     force: yes
+    #   become: yes
 
-    - name: Clone the System Management repository
-      git:
-        repo: "{{ system_management_repo_url }}"
-        dest: "{{ system_management_dest_dir }}"
-        version: main
-      become: yes
+    # - name: Clone the System Management repository
+    #   git:
+    #     repo: "{{ system_management_repo_url }}"
+    #     dest: "{{ system_management_dest_dir }}"
+    #     version: main
+    #   become: yes
 
-    - name: Replace value in backend .env file with server IP
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
-        regexp: '^FRONTEND_HOST=.*$'
-        line: 'FRONTEND_HOST={{ server_ip }}'
-      become: yes
-      when: deployment_type == 'controller'
+    # - name: Replace value in backend .env file with server IP
+    #   lineinfile:
+    #     path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
+    #     regexp: '^FRONTEND_HOST=.*$'
+    #     line: 'FRONTEND_HOST={{ server_ip }}'
+    #   become: yes
+    #   when: deployment_type == 'controller'
 
-    - name: Replace value in backend .env file with server port
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
-        regexp: '^FRONTEND_PORT=.*$'
-        line: 'FRONTEND_PORT={{ server_port }}'
-      become: yes
-      when: deployment_type == 'controller'
+    # - name: Replace value in backend .env file with server port
+    #   lineinfile:
+    #     path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
+    #     regexp: '^FRONTEND_PORT=.*$'
+    #     line: 'FRONTEND_PORT={{ server_port }}'
+    #   become: yes
+    #   when: deployment_type == 'controller'
 
-    - name: Replace value in frontend .env file with server IP
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/frontend.env"
-        regexp: '^REACT_APP_BACKEND_HOST=.*$'
-        line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
-      become: yes
-      when: deployment_type == 'controller'
+    # - name: Replace value in frontend .env file with server IP
+    #   lineinfile:
+    #     path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/frontend.env"
+    #     regexp: '^REACT_APP_BACKEND_HOST=.*$'
+    #     line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
+    #   become: yes
+    #   when: deployment_type == 'controller'
 
-    - name: Replace value in backend .env file with server IP
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/env/runnerserver.env"
-        regexp: '^CONTROLLER_HOST=.*$'
-        line: 'CONTROLLER_HOST={{ server_ip }}'
-      become: yes
-      when: deployment_type == 'runner'
+    # - name: Replace value in backend .env file with server IP
+    #   lineinfile:
+    #     path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/env/runnerserver.env"
+    #     regexp: '^CONTROLLER_HOST=.*$'
+    #     line: 'CONTROLLER_HOST={{ server_ip }}'
+    #   become: yes
+    #   when: deployment_type == 'runner'
 
-    - name: Run build_os_playbook_docker.yml 
-      include_tasks: build_os_playbook_docker.yml
+    # - name: Run build_os_playbook_docker.yml 
+    #   include_tasks: build_os_playbook_docker.yml
     
+    - name: Set system_management_service_file_path variable
+      set_fact:
+        service_file_path: /etc/systemd/system/system_management.service
+    
+    - name: Set system management working_directory variable
+      set_fact:
+        system_management_working_directory: "{{ system_management_dest_dir }}"
+
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
 
-    - name: Reboot the server
-      command: sudo reboot
-      become: yes
-      become_method: sudo
-      vars:
-        ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+    # - name: Reboot the server
+    #   command: sudo reboot
+    #   become: yes
+    #   become_method: sudo
+    #   vars:
+    #     ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
     

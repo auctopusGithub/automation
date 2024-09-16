@@ -6,10 +6,6 @@
       set_fact:
         service_file_path: /etc/systemd/system/auctopus_docker.service
 
-    - name: Set system_management_service_file_path variable
-      set_fact:
-        service_file_path: /etc/systemd/system/system_management.service
-
     - name: Set controller working_directory variable
       set_fact:
         working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod"
@@ -19,10 +15,6 @@
       set_fact:
         working_directory: "{{ auctopus_docker_dest_dir }}/runnerserver/prod"
       when: deployment_type == "runner"
-
-    - name: Set system management working_directory variable
-      set_fact:
-        system_management_working_directory: "{{ system_management_dest_dir }}"
 
     - name: Adding Docker Prerequisites
       include_tasks: docker/install_docker_prerequisites.yml
