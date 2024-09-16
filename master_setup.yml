@@ -111,7 +111,7 @@
     
     - name: Set system_management_service_file_path variable
       set_fact:
-        service_file_path: /etc/systemd/system/system_management.service
+        system_management_service_file_path: /etc/systemd/system/system_management.service
     
     - name: Set system management working_directory variable
       set_fact:
