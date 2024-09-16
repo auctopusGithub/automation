@@ -120,6 +120,13 @@
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
 
+    - name: Ensure python3-venv is installed
+      ansible.builtin.apt:
+        name: python3-venv
+        state: present
+      become: yes
+      when: deployment_type == 'controller'
+
     - name: Install Python dependencies from requirements.txt
       ansible.builtin.pip:
         requirements: "{{ system_management_working_directory }}/backend/requirements.txt"
