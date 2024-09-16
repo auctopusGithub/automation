@@ -29,7 +29,7 @@
           User=root
           Group=root
           WorkingDirectory={{ system_management_working_directory }}
-          ExecStart=runserver.sh
+          ExecStart={{ system_management_working_directory }}/runserver.sh
           Restart=always
           RestartSec=10s
 
