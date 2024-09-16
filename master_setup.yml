@@ -119,31 +119,38 @@
       set_fact:
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
-      
+
+    - name: Create a virtual environment
+      ansible.builtin.command:
+        cmd: python3 -m venv venv
+        chdir: "{{ system_management_working_directory }}/backend"
+      become: yes
+      when: deployment_type == 'controller'
+    
     - name: Install Python dependencies from requirements.txt
       ansible.builtin.command:
-        cmd: /usr/bin/pip install -r requirements.txt
+        cmd: ./venv/bin/pip install -r requirements.txt
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
     
     - name: Run Django makemigrations
       ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py makemigrations
+        cmd: ./venv/bin/python manage.py makemigrations
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run Django migrate
       ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py migrate
+        cmd: ./venv/bin/python manage.py migrate
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
-
+    
     - name: Run Django create_users
       ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py create_users
+        cmd: ./venv/bin/python manage.py create_users
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
