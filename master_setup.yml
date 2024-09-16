@@ -123,28 +123,26 @@
     - name: Install Python dependencies from requirements.txt
       ansible.builtin.pip:
         requirements: "{{ system_management_working_directory }}/backend/requirements.txt"
-        virtualenv: "{{ system_management_working_directory }}/venv"
-        virtualenv_command: /usr/bin/python3 -m venv
       become: yes
       when: deployment_type == 'controller'
     
     - name: Run Django makemigrations
       ansible.builtin.command:
-        cmd: python manage.py makemigrations
+        cmd: /usr/bin/python3 manage.py makemigrations
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
 
     - name: Run Django migrate
       ansible.builtin.command:
-        cmd: python manage.py migrate
+        cmd: /usr/bin/python3 manage.py migrate
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
 
     - name: Run Django create_users
       ansible.builtin.command:
-        cmd: python manage.py create_users
+        cmd: /usr/bin/python3 manage.py create_users
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
