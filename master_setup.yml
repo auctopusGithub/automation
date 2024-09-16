@@ -120,39 +120,23 @@
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
 
-    - name: Install specific Python dependencies
-      ansible.builtin.pip:
-        name:
-          - django
-          - python-decouple
-          - pyyaml
-        chdir: "{{ system_management_working_directory }}/backend"
+    - name: Create a virtual environment
+      ansible.builtin.command:
+        cmd: /usr/bin/python3 -m venv {{ system_management_working_directory }}/backend/venv
       become: yes
       when: deployment_type == 'controller'
-    
+
+    - name: Install specific Python dependencies in virtual environment
+      ansible.builtin.command:
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/pip install -r {{ system_management_working_directory }}/backend/requirements.txt"
+      become: yes
+      when: deployment_type == 'controller'
+
     - name: Run Django makemigrations
       ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py makemigrations
-        chdir: "{{ system_management_working_directory }}/backend"
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py makemigrations"
+      chdir: "{{ system_management_working_directory }}/backend"
       become: yes
-      when: deployment_type == 'controller'
-    
-    - name: Run Django migrate
-      ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py migrate
-        chdir: "{{ system_management_working_directory }}/backend"
-      become: yes
-      when: deployment_type == 'controller'
-    
-    - name: Run Django create_users
-      ansible.builtin.command:
-        cmd: /usr/bin/python3 manage.py create_users
-        chdir: "{{ system_management_working_directory }}/backend"
-      become: yes
-      when: deployment_type == 'controller'
-    
-    - name: Run create_system_management_service.yml 
-      include_tasks: create_system_management_service.yml
       when: deployment_type == 'controller'
   
     # - name: Reboot the server
