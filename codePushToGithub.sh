@@ -10,7 +10,7 @@ cd "$script_directory"
 read -p "Enter the branch name: " branch_name
 
 # Check if the branch name is "main"
-if [ "$branch_name" = "dev" ] || [ "$branch_name" = "main" ]; then
+if [ "$branch_name" = "main" ]; then
     # Add all changes
     git add .
 
@@ -21,9 +21,9 @@ if [ "$branch_name" = "dev" ] || [ "$branch_name" = "main" ]; then
     git commit -m "$commit_message"
 
     # Push changes directly to the "main" branch
-    git push origin dev
+    git push origin main
 
-    git pull origin dev
+    git pull origin main
 else
     # Create and switch to the new branch
     git checkout -b "$branch_name"
@@ -40,5 +40,5 @@ else
     # Push changes to the specified branch
     git push origin "$branch_name"
 
-    git checkout dev
+    git checkout main
 fi
