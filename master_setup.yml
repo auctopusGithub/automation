@@ -120,43 +120,23 @@
         system_management_working_directory: "{{ system_management_dest_dir }}"
       when: deployment_type == 'controller'
 
-    - name: Install Python3, pip, and python3-venv
-      ansible.builtin.apt:
-        name:
-          - python3
-          - python3-pip
-          - python3-venv
-        state: present
-
-    - name: Create a virtual environment
-      ansible.builtin.command:
-        cmd: /usr/bin/python3 -m venv {{ system_management_working_directory }}/backend/{{ venv_name }}
-      become: yes
-      when: deployment_type == 'controller'
-
-    - name: Install specific Python dependencies in virtual environment
-      ansible.builtin.command:
-        cmd: "{{ system_management_working_directory }}/backend/{{ venv_name }}/bin/pip install -r {{ system_management_working_directory }}/backend/requirements.txt"
-      become: yes
-      when: deployment_type == 'controller'
-
     - name: Run Django makemigrations
       ansible.builtin.command:
-        cmd: "{{ system_management_working_directory }}/backend/{{ venv_name }}/bin/python manage.py makemigrations"
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py makemigrations"
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
 
     - name: Run Django migrate
       ansible.builtin.command:
-        cmd: "{{ system_management_working_directory }}/backend/{{ venv_name }}/bin/python manage.py migrate"
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py migrate"
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
 
     - name: Run Django create_users
       ansible.builtin.command:
-        cmd: "{{ system_management_working_directory }}/backend/{{ venv_name }}/bin/python manage.py create_users"
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py create_users"
         chdir: "{{ system_management_working_directory }}/backend"
       become: yes
       when: deployment_type == 'controller'
