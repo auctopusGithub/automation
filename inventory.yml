@@ -1,6 +1,6 @@
 all:
   hosts:
-    master1:
+    controller:
       ansible_host: 192.168.85.157
       deployment_type: controller
       # server_ip: dev.auctopustechnologies.com
