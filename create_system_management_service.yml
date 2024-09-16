@@ -29,7 +29,7 @@
           User=root
           Group=root
           WorkingDirectory={{ system_management_working_directory }}
-          ExecStart={{ system_management_working_directory }}/runserver.sh
+          ExecStart= /usr/bin/python3 manage.py runserver 0.0.0.0:8000
           Restart=always
           RestartSec=10s
 
