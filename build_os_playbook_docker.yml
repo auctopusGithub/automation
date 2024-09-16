@@ -6,6 +6,10 @@
       set_fact:
         service_file_path: /etc/systemd/system/auctopus_docker.service
 
+    - name: Set system_management_service_file_path variable
+      set_fact:
+        service_file_path: /etc/systemd/system/system_management.service
+
     - name: Set controller working_directory variable
       set_fact:
         working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod"
