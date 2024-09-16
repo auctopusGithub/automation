@@ -135,8 +135,26 @@
     - name: Run Django makemigrations
       ansible.builtin.command:
         cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py makemigrations"
-      chdir: "{{ system_management_working_directory }}/backend"
+        chdir: "{{ system_management_working_directory }}/backend"
       become: yes
+      when: deployment_type == 'controller'
+
+    - name: Run Django migrate
+      ansible.builtin.command:
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py migrate"
+        chdir: "{{ system_management_working_directory }}/backend"
+      become: yes
+      when: deployment_type == 'controller'
+    
+    - name: Run Django create_users
+      ansible.builtin.command:
+        cmd: "{{ system_management_working_directory }}/backend/venv/bin/python manage.py create_users"
+        chdir: "{{ system_management_working_directory }}/backend"
+      become: yes
+      when: deployment_type == 'controller'
+    
+    - name: Run create_system_management_service.yml 
+      include_tasks: create_system_management_service.yml
       when: deployment_type == 'controller'
   
     # - name: Reboot the server
