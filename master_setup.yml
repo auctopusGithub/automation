@@ -113,16 +113,13 @@
     - name: Set system_management_service_file_path variable
       set_fact:
         system_management_service_file_path: /etc/systemd/system/system_management.service
-      when: deployment_type == 'controller'
 
     - name: Set system management working_directory variable
       set_fact:
         system_management_working_directory: "{{ system_management_dest_dir }}"
-      when: deployment_type == 'controller'
 
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
-      when: deployment_type == 'controller'
   
     # - name: Reboot the server
     #   command: sudo reboot
