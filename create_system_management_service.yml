@@ -29,8 +29,7 @@
           User=root
           Group=root
           WorkingDirectory={{ system_management_working_directory }}
-          ExecStart=/bin/bash -c 'source /home/automation/automation/system_management/venv/bin/activate && exec /usr/bin/python3 /home/automation/automation/system_management/backend/manage.py runserver 0.0.0.0:5000'
-          Environment="PATH={{ system_management_working_directory }}/venv/bin:$PATH"
+          ExecStart={{ system_management_executable_path }}/runserver.sh
           Restart=always
           RestartSec=10s
 
