@@ -29,7 +29,7 @@
           User=root
           Group=root
           WorkingDirectory={{ system_management_working_directory }}
-          ExecStart= /bin/bash -c 'source ./venv/bin/activate && exec python manage.py runserver 0.0.0.0:5000'
+          ExecStart= /bin/bash -c 'source ./venv/bin/activate && exec python backend/manage.py runserver 0.0.0.0:5000'
           Restart=always
           RestartSec=10s
 
