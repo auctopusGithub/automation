@@ -123,13 +123,20 @@
         state: present
       become: yes
 
+    - name: Replace value in system_mangement .env file with deployment_type
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/.env"
+        regexp: '^DEPLOYMENT_TYPE=.*$'
+        line: 'DEPLOYMENT_TYPE={{ deployment_type }}'
+      become: yes
+
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
-  
-    # - name: Reboot the server
-    #   command: sudo reboot
-    #   become: yes
-    #   become_method: sudo
-    #   vars:
-    #     ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
+
+    - name: Reboot the server
+      command: sudo reboot
+      become: yes
+      become_method: sudo
+      vars:
+        ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}"
     
