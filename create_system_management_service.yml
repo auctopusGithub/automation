@@ -40,4 +40,14 @@
       ansible.builtin.systemd:
         daemon_reload: yes
 
+    - name: Enable System Management Service
+      ansible.builtin.systemd:
+        name: "system_management"
+        enabled: yes
+
+    - name: Start System Management Service
+      ansible.builtin.systemd:
+        name: "system_management"
+        state: started
+
   become: yes
