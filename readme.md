@@ -64,3 +64,16 @@ sudo nano /etc/ssh/ssh_config
 KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,diffie-hellman-group14-sha256
 HostKeyAlgorithms +ssh-rsa,ecdsa-sha2-nistp256
 ```
+
+
+#System Management
+sudo systemctl daemon-reload
+sudo systemctl enable system_management.service
+sudo systemctl start system_management.service
+sudo systemctl status system_management.service
+
+#To stop
+sudo systemctl stop system_management.service
+
+# Troubleshoot
+sudo journalctl -u system_management.service
