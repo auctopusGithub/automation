@@ -4,9 +4,9 @@
 
   vars:
     auctopus_docker_repo_url: "{{ lookup('env', 'AUCTOPUS_DOCKER_REPO_URL') }}"
-    auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+    # auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
     system_management_repo_url: "{{ lookup('env', 'SYSTEM_MANAGEMENT_REPO_URL') }}"
-    system_management_dest_dir: "{{ playbook_dir }}/system_management"
+    # system_management_dest_dir: "{{ playbook_dir }}/system_management"
     ansible_ssh_user: "{{ lookup('env', 'ANSIBLE_SSH_USER') }}"
     ansible_ssh_pass: "{{ lookup('env', 'ANSIBLE_SSH_PASS') }}"
     ansible_become_pass: "{{ lookup('env', 'ANSIBLE_BECOME_PASS') }}" 
@@ -22,6 +22,19 @@
   tasks:
     - debug:
         msg: "{{server_ip}}"
+
+    - name: Set auctopus_docker_dest_dir variable
+      set_fact:
+        auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+
+    - name: Set system_management_dest_dir variable
+      set_fact:
+        system_management_dest_dir: "{{ playbook_dir }}/system_management"
+
+    - name: Debug the auctopus_docker_dest_dir variable
+      debug:
+        msg: "auctopus_docker_dest_dir is set to {{ auctopus_docker_dest_dir }}"
+
 
     - name: Remove Docker APT sources list
       ansible.builtin.file:

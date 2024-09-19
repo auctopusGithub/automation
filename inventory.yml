@@ -4,7 +4,7 @@ all:
     #   ansible_host: 192.168.85.157
     #   deployment_type: controller
     #   server_ip: dev.auctopustechnologies.com
-    #   server_port: 8000
+    #   server_port: 80
     
     # runner1:
     #   ansible_host: 10.61.1.177
@@ -30,15 +30,15 @@ all:
     #   server_ip: 10.91.1.177
     #   server_port: 8000
 
-    # local:
-    #   ansible_host: 192.168.67.141
-    #   deployment_type: runner
-    #   server_ip: 192.168.67.141
-    #   server_port: 8000
+    # controller:
+    #   ansible_host: 192.168.67.145
+    #   deployment_type: controller
+    #   server_ip: 192.168.67.145
+    #   server_port: 80
 
-    controller:
-      ansible_host: 192.168.67.142
-      deployment_type: controller
-      server_ip: 192.168.67.141
+    runner:
+      ansible_host: 192.168.67.144
+      deployment_type: runner
+      server_ip: 192.168.67.144
       server_port: 8000
 

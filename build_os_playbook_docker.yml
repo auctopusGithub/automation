@@ -33,6 +33,27 @@
       become: yes
       ignore_errors: yes
 
+    # - name: Change permissions of ansible_fresh_start.yml
+    #   file:
+    #     path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/ansible_fresh_start.yml"
+    #     mode: '0777'
+    #   become: yes
+
+    # - name: Check if ansible_fresh_start.yml exists
+    #   stat:
+    #     path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/ansible_fresh_start.yml"
+    #   register: ansible_fresh_start_file
+    #   become: yes
+
+    # - name: Debug the ansible_fresh_start_file variable
+    #   debug:
+    #     var: ansible_fresh_start_file
+
+    # - name: Fail if ansible_fresh_start.yml does not exist
+    #   fail:
+    #     msg: "The file ansible_fresh_start.yml does not exist at {{ auctopus_docker_dest_dir }}/runnerserver/prod/ansible_fresh_start.yml"
+    #   when: not ansible_fresh_start_file.stat.exists
+
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod/ansible_fresh_start.yml"
       when: deployment_type == "controller"
