@@ -53,6 +53,10 @@ clear
 ansible-playbook automation/master_setup.yml -i automation/inventory.yml --ssh-extra-args='-o StrictHostKeyChecking=no'
 ```
 
+```bash
+ansible-playbook automation/master_setup.yml -i automation/inventory.yml --ssh-extra-args='-o StrictHostKeyChecking=no' -vvv
+```
+
 
 7. Add KexAlgorithms:
 ```bash
