@@ -32,4 +32,7 @@ all:
 
     local:
       ansible_host: "{{ lookup('env', 'SERVER_IP') }}"
+      deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
+      server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+      server_port: "{{ lookup('env', 'SERVER_PORT') }}"
 
