@@ -15,6 +15,7 @@
     deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
     server_port: "{{ lookup('env', 'SERVER_PORT') }}"
     server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+    static_playbook_dir: "/home/automation/automation"
 
     
   tasks:
@@ -23,11 +24,11 @@
 
     - name: Set auctopus_docker_dest_dir variable
       set_fact:
-        auctopus_docker_dest_dir: "{{ playbook_dir }}/auctopus_docker"
+        auctopus_docker_dest_dir: "{{ static_playbook_dir }}/auctopus_docker"
 
     - name: Set system_management_dest_dir variable
       set_fact:
-        system_management_dest_dir: "{{ playbook_dir }}/system_management"
+        system_management_dest_dir: "{{ static_playbook_dir }}/system_management"
 
     - name: Debug the auctopus_docker_dest_dir variable
       debug:
