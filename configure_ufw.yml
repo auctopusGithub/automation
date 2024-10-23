@@ -1,0 +1,35 @@
+- name: Configure UFW based on deployment type
+  block:
+    - name: Enable UFW
+      ansible.builtin.ufw:
+        state: enabled
+        logging: 'on'
+        direction: in
+        rule: allow
+        port: 5000
+      become: yes
+
+    - name: Allow 8000 (backend)
+      ansible.builtin.ufw:
+        rule: allow
+        port: 8000
+      become: yes
+
+    - name: Allow 80 (frontend) if controller
+      ansible.builtin.ufw:
+        rule: allow
+        port: 80
+      become: yes
+      when: deployment_type == 'controller'
+
+    - name: Block all other incoming ports
+      ansible.builtin.ufw:
+        default: deny
+        direction: incoming
+      become: yes
+
+    - name: Allow all outgoing traffic
+      ansible.builtin.ufw:
+        default: allow
+        direction: outgoing
+      become: yes
