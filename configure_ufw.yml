@@ -15,6 +15,13 @@
         port: 8000
       become: yes
 
+    - name: Allow 22 (backend)
+      ansible.builtin.ufw:
+        rule: allow
+        port: 22
+      become: yes
+
+
     - name: Allow 80 (frontend) if controller
       ansible.builtin.ufw:
         rule: allow
