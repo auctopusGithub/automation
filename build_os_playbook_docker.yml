@@ -11,6 +11,11 @@
         working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod"
       when: deployment_type == "controller"
 
+    - name: Set development working_directory variable
+      set_fact:
+        working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod_dev"
+      when: deployment_type == "development"
+
     - name: Set runner working_directory variable
       set_fact:
         working_directory: "{{ auctopus_docker_dest_dir }}/runnerserver/prod"
@@ -61,6 +66,10 @@
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/ansible_fresh_start.yml"
       when: deployment_type == "runner"
+
+    - name: Run Docker Setup
+      include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/ansible_fresh_start.yml"
+      when: deployment_type == "development"
 
     
 
