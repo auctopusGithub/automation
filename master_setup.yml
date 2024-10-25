@@ -16,6 +16,7 @@
     server_port: "{{ lookup('env', 'SERVER_PORT') }}"
     server_ip: "{{ lookup('env', 'SERVER_IP') }}"
     static_playbook_dir: "/home/automation/automation"
+    allowed_host: "{{ lookup('env', 'ALLOWED_HOST') }}"
 
     
   tasks:
@@ -92,7 +93,7 @@
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/backend.env"
         regexp: '^FRONTEND_HOST=.*$'
-        line: 'FRONTEND_HOST={{ server_ip }}'
+        line: 'FRONTEND_HOST={{ allowed_host }}'
       become: yes
       when: deployment_type == 'controller'
 
@@ -108,7 +109,7 @@
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod/env/frontend.env"
         regexp: '^REACT_APP_BACKEND_HOST=.*$'
-        line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
+        line: 'REACT_APP_BACKEND_HOST={{ allowed_host }}'
       become: yes
       when: deployment_type == 'controller'
 
@@ -116,7 +117,7 @@
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
         regexp: '^FRONTEND_HOST=.*$'
-        line: 'FRONTEND_HOST={{ server_ip }}'
+        line: 'FRONTEND_HOST={{ allowed_host }}'
       become: yes
       when: deployment_type == 'development'
 
@@ -132,7 +133,7 @@
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/frontend.env"
         regexp: '^REACT_APP_BACKEND_HOST=.*$'
-        line: 'REACT_APP_BACKEND_HOST={{ server_ip }}'
+        line: 'REACT_APP_BACKEND_HOST={{ allowed_host }}'
       become: yes
       when: deployment_type == 'development'
 
