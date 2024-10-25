@@ -31,8 +31,11 @@ all:
     #   server_port: 8000
 
     local:
-      ansible_host: "{{ lookup('env', 'SERVER_IP') }}"
+      # ansible_host: "{{ lookup('env', 'SERVER_IP') }}"
       deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
-      server_ip: "{{ lookup('env', 'SERVER_IP') }}"
+      # server_ip: "{{ lookup('env', 'SERVER_IP') }}"
       server_port: "{{ lookup('env', 'SERVER_PORT') }}"
+      ansible_host: 192.168.85.157
+      deployment_type: controller
+      server_ip: dev.auctopustechnologies.com
 
