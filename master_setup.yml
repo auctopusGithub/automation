@@ -155,7 +155,19 @@
     - name: Set system management working_directory variable
       set_fact:
         system_management_working_directory: "{{ system_management_dest_dir }}"
-    
+
+    - name: Remove Docker APT sources list
+      ansible.builtin.file:
+        path: /etc/apt/sources.list.d/docker.list
+        state: absent
+      become: yes
+
+    - name: Remove Docker GPG keyring
+      ansible.builtin.file:
+        path: /usr/share/keyrings/docker-archive-keyring.gpg
+        state: absent
+      become: yes
+      
     - name: Install python3-venv
       apt:
         name: python3-venv
