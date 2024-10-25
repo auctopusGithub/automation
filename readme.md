@@ -27,6 +27,7 @@ export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
 export SYSTEM_MANAGEMENT_REPO_URL=""
+export ALLOWED_HOST=""
 
 clear
 ```
@@ -45,6 +46,7 @@ export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
 export SYSTEM_MANAGEMENT_REPO_URL=""
+export ALLOWED_HOST=""
 clear
 ```
 
