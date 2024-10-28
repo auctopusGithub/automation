@@ -8,8 +8,9 @@ sudo apt update && sudo apt upgrade -y && sudo apt install -y git ansible sshpas
 ```
 
 3. Clone automation repository using HTTPS on deployment machine:
-```bash
+
 If 51 then use docker reporeadme
+```bash
 sudo rm -rf automation/
 sudo git clone https://github.com/auctopusGithub/automation.git
 ```
