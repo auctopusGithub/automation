@@ -35,7 +35,7 @@ all:
       deployment_type: "{{ lookup('env', 'DEPLOYMENT_TYPE') }}"
       # server_ip: "{{ lookup('env', 'SERVER_IP') }}"
       server_port: "{{ lookup('env', 'SERVER_PORT') }}"
-      ansible_host: 192.168.67.180
+      ansible_host: 192.168.67.181
       # deployment_type: controller
       # server_ip: 192.168.67.180
       # server_ip: dev.auctopustechnologies.com
