@@ -1,0 +1,72 @@
+- name: Create NetPeace Banner Service
+  hosts: all
+  tasks:
+    - name: Define variables for service paths
+      set_fact:
+        netpeace_service_file_path: "/etc/systemd/system/netpeace-banner.service"
+        netpeace_script_path: "/usr/local/bin/update_issue.sh"
+
+    - name: Check if NetPeace Banner Service File Exists
+      ansible.builtin.stat:
+        path: "{{ netpeace_service_file_path }}"
+      register: service_file_stat
+
+    - name: Remove Existing NetPeace Banner Service File
+      ansible.builtin.file:
+        path: "{{ netpeace_service_file_path }}"
+        state: absent
+      when: service_file_stat.stat.exists
+
+    - name: Create Update Script for NetPeace Banner
+      ansible.builtin.copy:
+        dest: "{{ netpeace_script_path }}"
+        content: |
+          #!/bin/bash
+          IP_ADDRESS=$(hostname -I | awk '{print $1}')
+          echo -e "\n########################################" > /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "#           Welcome to NetPeace          #" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "##########################################" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "#   IP Address: $IP_ADDRESS              #" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "##########################################\n" >> /etc/issue
+        mode: '0755'
+
+    - name: Create NetPeace Banner Service File
+      ansible.builtin.file:
+        path: "{{ netpeace_service_file_path }}"
+        state: touch
+        mode: '0644'
+
+    - name: Insert NetPeace Banner Service Configuration
+      ansible.builtin.blockinfile:
+        path: "{{ netpeace_service_file_path }}"
+        block: |
+          [Unit]
+          Description=NetPeace Banner Service
+          After=network-online.target
+
+          [Service]
+          Type=oneshot
+          ExecStart={{ netpeace_script_path }}
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload Systemd Daemon
+      ansible.builtin.systemd:
+        daemon_reload: yes
+
+    - name: Enable NetPeace Banner Service
+      ansible.builtin.systemd:
+        name: "netpeace-banner"
+        enabled: yes
+
+    - name: Start NetPeace Banner Service
+      ansible.builtin.systemd:
+        name: "netpeace-banner"
+        state: started
+
+  become: yes
