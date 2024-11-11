@@ -29,7 +29,7 @@ export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
 export SYSTEM_MANAGEMENT_REPO_URL=""
-export ANSIBLE_SSH_HOST=""
+export ANSIBLE_SSH_HOST="HOST_IP"
 clear
 ```
 
@@ -39,7 +39,7 @@ export GITHUB_TOKEN=''
 export DOCKER_TOKEN=''
 export DEPLOYMENT_TYPE='runner'
 export SERVER_IP='IP'
-export SERVER_PORT='8000'
+export SERVER_PORT='8085'
 export GITHUB_USERNAME=''
 export DOCKER_USERNAME=''
 export ANSIBLE_SSH_USER=""
@@ -47,7 +47,7 @@ export ANSIBLE_SSH_PASS=""
 export ANSIBLE_BECOME_PASS=""
 export AUCTOPUS_DOCKER_REPO_URL=""
 export SYSTEM_MANAGEMENT_REPO_URL=""
-export ANSIBLE_SSH_HOST=""
+export ANSIBLE_SSH_HOST="HOST_IP"
 clear
 ```
 
