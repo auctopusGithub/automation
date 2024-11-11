@@ -1,6 +1,5 @@
 - name: Create NetPeace Banner Service
-  hosts: all
-  tasks:
+  block:
     - name: Define variables for service paths
       set_fact:
         netpeace_service_file_path: "/etc/systemd/system/netpeace-banner.service"
