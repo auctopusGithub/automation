@@ -21,6 +21,11 @@
         working_directory: "{{ auctopus_docker_dest_dir }}/runnerserver/prod"
       when: deployment_type == "runner"
 
+    - name: Set license working_directory variable
+      set_fact:
+        working_directory: "{{ auctopus_docker_dest_dir }}/license/prod"
+      when: deployment_type == "license"
+
     - name: Adding Docker Prerequisites
       include_tasks: docker/install_docker_prerequisites.yml
 
@@ -66,6 +71,10 @@
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/ansible_fresh_start.yml"
       when: deployment_type == "runner"
+
+    - name: Run Docker Setup
+      include_tasks: "{{ auctopus_docker_dest_dir }}/license/prod/ansible_fresh_start.yml"
+      when: deployment_type == "license"
 
     - name: Run Docker Setup
       include_tasks: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/ansible_fresh_start.yml"
