@@ -51,8 +51,8 @@
 
     - name: Validate deployment type
       fail:
-        msg: "Invalid deployment type. Please enter 'controller' or 'runner' or 'development'."
-      when: deployment_type not in ['controller', 'runner', 'development']
+        msg: "Invalid deployment type. Please enter 'controller' or 'runner' or 'development' or 'license'."
+      when: deployment_type not in ['controller', 'runner', 'development', 'license']
     
     - name: Configure Git with GitHub token
       shell: |
