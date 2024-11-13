@@ -142,7 +142,7 @@
       become: yes
       when: deployment_type == 'development'
 
-        - name: Replace value in backend .env file with server IP
+    - name: Replace value in backend .env file with server IP
       lineinfile:
         path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
         regexp: '^FRONTEND_HOST=.*$'
