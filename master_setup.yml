@@ -179,23 +179,7 @@
       become: yes
       when: deployment_type == 'lite'
 
-    - name: Replace value in backend .env file with server IP
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/lite/env/runnerserver.env"
-        regexp: '^CONTROLLER_HOST=.*$'
-        line: 'CONTROLLER_HOST={{ server_ip }}'
-      become: yes
-      when: deployment_type == 'lite'
-
     # --------------------------------------------------------------
-
-    - name: Replace value in backend .env file with server IP
-      lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/runnerserver/prod/env/runnerserver.env"
-        regexp: '^CONTROLLER_HOST=.*$'
-        line: 'CONTROLLER_HOST={{ server_ip }}'
-      become: yes
-      when: deployment_type == 'runner'
 
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
