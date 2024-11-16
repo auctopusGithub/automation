@@ -70,7 +70,7 @@ HostKeyAlgorithms +ssh-rsa,ecdsa-sha2-nistp256
 7. Add license entry:
 ```bash
 sudo nano /etc/hosts
-192.168.85.157 license.auctopustechnologies.com
+192.168.85.102 license.auctopustechnologies.com
 
 ```
 
