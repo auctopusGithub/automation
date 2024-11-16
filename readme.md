@@ -67,7 +67,12 @@ sudo nano /etc/ssh/ssh_config
 KexAlgorithms diffie-hellman-group14-sha1,ecdh-sha2-nistp256,diffie-hellman-group14-sha256
 HostKeyAlgorithms +ssh-rsa,ecdsa-sha2-nistp256
 ```
+7. Add license entry:
+```bash
+sudo nano /etc/hosts
+192.168.85.157 license.auctopustechnologies.com
 
+```
 
 #System Management
 sudo systemctl daemon-reload
