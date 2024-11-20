@@ -68,6 +68,7 @@
         state: absent
         force: yes
       become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Clone the System Management repository
       git:
@@ -75,6 +76,7 @@
         dest: "{{ system_management_dest_dir }}"
         version: main
       become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     # --------------------------------------------------------------
     # Controller Env Setup
@@ -175,10 +177,12 @@
     - name: Set system_management_service_file_path variable
       set_fact:
         system_management_service_file_path: /etc/systemd/system/system_management.service
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Set system management working_directory variable
       set_fact:
         system_management_working_directory: "{{ system_management_dest_dir }}"
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Install python3-venv
       apt:
@@ -192,9 +196,11 @@
         regexp: '^DEPLOYMENT_TYPE=.*$'
         line: 'DEPLOYMENT_TYPE={{ deployment_type }}'
       become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
+      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Run customize_machine.yml
       include_tasks: customize_machine.yml
