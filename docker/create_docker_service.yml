@@ -29,7 +29,7 @@
           User=root
           Group=root
           WorkingDirectory={{ working_directory }}
-          ExecStart=/usr/local/bin/docker compose -f docker compose.prod.yml up -d
+          ExecStart=docker compose -f docker-compose.prod.yml up -d
           Restart=always
           RestartSec=10s
           StandardOutput=journal
