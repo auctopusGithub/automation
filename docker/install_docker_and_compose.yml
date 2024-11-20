@@ -6,7 +6,7 @@
       ignore_errors: yes
 
     - name: Check if Docker Compose is installed
-      ansible.builtin.command: docker compose --version
+      ansible.builtin.command: docker compose version
       register: docker_compose_installed
       ignore_errors: yes
 
