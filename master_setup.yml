@@ -37,18 +37,6 @@
     # - name: Configure UFW based on deployment type
     #   include_tasks: configure_ufw.yml
 
-    - name: Remove Docker APT sources list
-      ansible.builtin.file:
-        path: /etc/apt/sources.list.d/docker.list
-        state: absent
-      become: yes
-
-    - name: Remove Docker GPG keyring
-      ansible.builtin.file:
-        path: /usr/share/keyrings/docker-archive-keyring.gpg
-        state: absent
-      become: yes
-
     - name: Validate deployment type
       fail:
         msg: "Invalid deployment type. Please enter 'controller' or 'runner' or 'development' or 'license' or 'lite'."
