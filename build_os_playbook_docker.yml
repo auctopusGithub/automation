@@ -33,6 +33,7 @@
 
     - name: Adding Docker and Compose packages
       include_tasks: docker/install_docker_and_compose.yml
+      become: yes
 
     - name: Create Docker Service
       include_tasks: docker/create_docker_service.yml
