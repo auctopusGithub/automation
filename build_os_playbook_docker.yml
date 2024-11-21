@@ -31,9 +31,6 @@
         working_directory: "{{ auctopus_docker_dest_dir }}/license/prod"
       when: deployment_type == "license"
 
-    - name: Adding Docker Prerequisites
-      include_tasks: docker/install_docker_prerequisites.yml
-
     - name: Adding Docker and Compose packages
       include_tasks: docker/install_docker_and_compose.yml
 

@@ -16,6 +16,17 @@
       become: yes
       when: docker_installed.rc != 0 or docker_compose_installed.rc != 0
 
+    - name: Install prerequisites
+      ansible.builtin.apt:
+        name:
+          - curl
+          - apt-transport-https
+          - ca-certificates
+          - gnupg
+          - lsb-release
+          - software-properties-common
+      become: yes
+
     - name: Install Docker
       ansible.builtin.apt:
         name: 
