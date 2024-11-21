@@ -58,3 +58,4 @@
         enabled: yes
         state: started
       when: docker_installed.rc != 0
+  become: yes
