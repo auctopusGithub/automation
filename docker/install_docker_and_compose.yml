@@ -49,7 +49,7 @@
           - docker-ce-cli
           - containerd.io
           - docker-compose-plugin
-      state: present
+        state: present
       when: docker_installed.rc != 0 or docker_compose_installed.rc != 0
 
     - name: Enable and Start Docker service
