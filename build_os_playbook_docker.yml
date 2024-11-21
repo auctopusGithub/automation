@@ -6,11 +6,6 @@
       set_fact:
         service_file_path: /etc/systemd/system/auctopus_docker.service
 
-    - name: Set controller working_directory variable
-      set_fact:
-        working_directory: "{{ auctopus_docker_dest_dir }}/automation/prod"
-      when: deployment_type == "controller"
-
     - name: Set lite working_directory variable
       set_fact:
         working_directory: "{{ auctopus_docker_dest_dir }}/lite"
