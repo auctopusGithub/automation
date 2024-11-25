@@ -30,6 +30,14 @@
           echo -e "#                                        #" >> /etc/issue
           echo -e "#   IP Address: $IP_ADDRESS              #" >> /etc/issue
           echo -e "#                                        #" >> /etc/issue
+          echo -e "##########################################" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "#  For Admin UI, please login to:        #" >> /etc/issue
+          echo -e "#  http://$IP_ADDRESS:5000/              #" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
+          echo -e "#  For Application access, please login  #" >> /etc/issue
+          echo -e "#  to: http://$IP_ADDRESS                #" >> /etc/issue
+          echo -e "#                                        #" >> /etc/issue
           echo -e "##########################################\n" >> /etc/issue
         mode: '0755'
 
