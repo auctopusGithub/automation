@@ -63,4 +63,8 @@
         enabled: yes
         state: started
       when: docker_installed.rc != 0
+      
+    - name: Change permissions for Docker socket
+      ansible.builtin.command: sudo chmod 666 /var/run/docker.sock
+      when: docker_installed.rc != 0
   become: yes
