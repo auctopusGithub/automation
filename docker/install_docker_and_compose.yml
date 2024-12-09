@@ -66,5 +66,5 @@
       
     - name: Change permissions for Docker socket
       ansible.builtin.command: sudo chmod 666 /var/run/docker.sock
-      when: docker_installed.rc != 0
+      ignore_errors: yes
   become: yes
