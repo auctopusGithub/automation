@@ -106,11 +106,11 @@
       become: yes
       when: deployment_type == 'development'
 
-    - name: Replace value in backend .env file with server IP
+    - name: Replace value in system management update_allowed_host.yml file with current deployment
       lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
-        regexp: '^FRONTEND_HOST=.*$'
-        line: 'FRONTEND_HOST={{ server_ip }}'
+        path: "{{ system_management_dest_dir }}/backend/system_management/ansible/update_allowed_host.yml"
+        regexp: '^    auctopus_docker_dest_dir:.*$'
+        line: '    auctopus_docker_dest_dir: "{{ static_playbook_dir }}/auctopus_docker/automation/prod_dev"'
       become: yes
       when: deployment_type == 'development'
 
