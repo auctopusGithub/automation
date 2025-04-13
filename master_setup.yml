@@ -41,6 +41,11 @@
       fail:
         msg: "Invalid deployment type. Please enter 'runner' or 'development' or 'license' or 'lite'."
       when: deployment_type not in ['runner', 'development', 'license', 'lite']
+
+    # --------------------------------------------------------------
+
+    # --------------------------------------------------------------
+    # Configure Git & GitHub, Clone Auctopus Docker and System Management repositories
     
     - name: Configure Git with GitHub token
       shell: |
@@ -81,6 +86,33 @@
     # --------------------------------------------------------------
 
     # --------------------------------------------------------------
+    # Get controller private and public IP from host
+
+    - name: Get controller private IP from host
+      command: ip route get 1.1.1.1
+      register: ip_route_output
+      changed_when: false
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Set controller_private_ip fact
+      set_fact:
+        controller_private_ip: "{{ ip_route_output.stdout.split('src')[1].split()[0] }}"
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Get controller public IP from host
+      shell: curl -s https://api.ipify.org
+      register: controller_public_ip_output
+      changed_when: false
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Set controller_public_ip fact
+      set_fact:
+        controller_public_ip: "{{ controller_public_ip_output.stdout }}"
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    # --------------------------------------------------------------
+
+    # --------------------------------------------------------------
     # Development Env Setup
     - name: Replace value in backend .env file with server IP
       lineinfile:
@@ -106,6 +138,30 @@
       become: yes
       when: deployment_type == 'development'
 
+    - name: Update CONTROLLER_PRIVATE_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
+        regexp: '^CONTROLLER_PRIVATE_IP=.*$'
+        line: "CONTROLLER_PRIVATE_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type == 'development'
+
+    - name: Update CONTROLLER_PUBLIC_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
+        regexp: '^CONTROLLER_PUBLIC_IP=.*$'
+        line: "CONTROLLER_PUBLIC_IP={{ controller_public_ip }}"
+      become: yes
+      when: deployment_type == 'development'
+
+    - name: Set CONTROLLER_IP as CONTROLLER_PRIVATE_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/prod_dev/env/backend.env"
+        regexp: '^CONTROLLER_IP=.*$'
+        line: "CONTROLLER_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type == 'development'
+
     - name: Replace value in system management update_allowed_host.yml file with current deployment
       lineinfile:
         path: "{{ system_management_dest_dir }}/backend/system_management/ansible/update_allowed_host.yml"
@@ -114,6 +170,13 @@
       become: yes
       when: deployment_type == 'development'
 
+    - name: Replace value in system management update_controller_ip.yml file with current deployment
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/system_management/ansible/update_controller_ip.yml"
+        regexp: '^    auctopus_docker_dest_dir:.*$'
+        line: '    auctopus_docker_dest_dir: "{{ static_playbook_dir }}/auctopus_docker/automation/prod_dev"'
+      become: yes
+      when: deployment_type == 'development'
     # --------------------------------------------------------------
 
     # --------------------------------------------------------------
@@ -143,7 +206,71 @@
       become: yes
       when: deployment_type == 'lite'
 
+    - name: Update CONTROLLER_PRIVATE_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        regexp: '^CONTROLLER_PRIVATE_IP=.*$'
+        line: "CONTROLLER_PRIVATE_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type == 'lite'
+
+    - name: Update CONTROLLER_PUBLIC_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        regexp: '^CONTROLLER_PUBLIC_IP=.*$'
+        line: "CONTROLLER_PUBLIC_IP={{ controller_public_ip }}"
+      become: yes
+      when: deployment_type == 'lite'
+
+    - name: Set CONTROLLER_IP as CONTROLLER_PRIVATE_IP in backend.env
+      lineinfile:
+        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        regexp: '^CONTROLLER_IP=.*$'
+        line: "CONTROLLER_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type == 'lite'
+
     # --------------------------------------------------------------
+
+    # --------------------------------------------------------------
+    # Update system management .env file for system management
+
+    - name: Update CONTROLLER_PRIVATE_IP in .env for system management
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/.env"
+        regexp: '^CONTROLLER_PRIVATE_IP=.*$'
+        line: "CONTROLLER_PRIVATE_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Update CONTROLLER_PUBLIC_IP in .env for system management
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/.env"
+        regexp: '^CONTROLLER_PUBLIC_IP=.*$'
+        line: "CONTROLLER_PUBLIC_IP={{ controller_public_ip }}"
+      become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Set CONTROLLER_IP as CONTROLLER_PRIVATE_IP in .env for system management
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/.env"
+        regexp: '^CONTROLLER_IP=.*$'
+        line: "CONTROLLER_IP={{ controller_private_ip }}"
+      become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    - name: Replace value in system_mangement .env file with deployment_type
+      lineinfile:
+        path: "{{ system_management_dest_dir }}/backend/.env"
+        regexp: '^DEPLOYMENT_TYPE=.*$'
+        line: 'DEPLOYMENT_TYPE={{ deployment_type }}'
+      become: yes
+      when: deployment_type != 'runner' and deployment_type != 'license'
+
+    # --------------------------------------------------------------
+
+    # --------------------------------------------------------------
+    # Install Docker & Docker Compose, Create and Start Services
 
     - name: Run build_os_playbook_docker.yml 
       include_tasks: build_os_playbook_docker.yml
@@ -163,14 +290,6 @@
         name: python3-venv
         state: present
       become: yes
-
-    - name: Replace value in system_mangement .env file with deployment_type
-      lineinfile:
-        path: "{{ system_management_dest_dir }}/backend/.env"
-        regexp: '^DEPLOYMENT_TYPE=.*$'
-        line: 'DEPLOYMENT_TYPE={{ deployment_type }}'
-      become: yes
-      when: deployment_type != 'runner' and deployment_type != 'license'
 
     - name: Run create_system_management_service.yml 
       include_tasks: create_system_management_service.yml
