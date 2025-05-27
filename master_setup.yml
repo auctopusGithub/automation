@@ -208,7 +208,7 @@
 
     - name: Update CONTROLLER_PRIVATE_IP in backend.env
       lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        path: "{{ auctopus_docker_dest_dir }}/lite/env/backend.env"
         regexp: '^CONTROLLER_PRIVATE_IP=.*$'
         line: "CONTROLLER_PRIVATE_IP={{ controller_private_ip }}"
       become: yes
@@ -216,7 +216,7 @@
 
     - name: Update CONTROLLER_PUBLIC_IP in backend.env
       lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        path: "{{ auctopus_docker_dest_dir }}/lite/env/backend.env"
         regexp: '^CONTROLLER_PUBLIC_IP=.*$'
         line: "CONTROLLER_PUBLIC_IP={{ controller_public_ip }}"
       become: yes
@@ -224,7 +224,7 @@
 
     - name: Set CONTROLLER_IP as CONTROLLER_PRIVATE_IP in backend.env
       lineinfile:
-        path: "{{ auctopus_docker_dest_dir }}/automation/lite/env/backend.env"
+        path: "{{ auctopus_docker_dest_dir }}/lite/env/backend.env"
         regexp: '^CONTROLLER_IP=.*$'
         line: "CONTROLLER_IP={{ controller_private_ip }}"
       become: yes
