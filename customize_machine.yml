@@ -22,23 +22,23 @@
         content: |
           #!/bin/bash
           IP_ADDRESS=$(hostname -I | awk '{print $1}')
-          echo -e "\n########################################" > /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "#           Welcome to NetPeace          #" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "##########################################" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "#   IP Address: $IP_ADDRESS              #" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "##########################################" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "#  For Admin UI, please login to:        #" >> /etc/issue
-          echo -e "#  http://$IP_ADDRESS:5000/              #" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "#  For Application access, please login  #" >> /etc/issue
-          echo -e "#  to: http://$IP_ADDRESS                #" >> /etc/issue
-          echo -e "#                                        #" >> /etc/issue
-          echo -e "##########################################\n" >> /etc/issue
+          echo -e "\n############################################" > /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "#           Welcome to NetPeace           #" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "############################################" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "#   IP Address: $IP_ADDRESS                #" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "############################################" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "#  For Admin UI, please login to:          #" >> /etc/issue
+          echo -e "#  http://$IP_ADDRESS:5000/                #" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "#  For Application access, please login    #" >> /etc/issue
+          echo -e "#  to: https://$IP_ADDRESS                 #" >> /etc/issue
+          echo -e "#                                          #" >> /etc/issue
+          echo -e "############################################\n" >> /etc/issue
         mode: '0755'
 
     - name: Create NetPeace Banner Service File
